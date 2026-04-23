@@ -577,6 +577,74 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .et-empty{padding:3rem;text-align:center;color:var(--text4);font-size:13px}
 
 .sdiv{border:none;border-top:1px solid var(--border);margin:1.25rem 0}
+/* ── RULES & ESCALATION ── */
+.rul-add-card{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--rlg);padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.rul-add-row1{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rul-title-in{flex:1;min-width:180px;padding:9px 12px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:13px;color:var(--text)}
+.rul-title-in:focus{outline:none;border-color:var(--green)}
+.rul-type-sel{padding:9px 10px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:12px;color:var(--text2)}
+.rul-type-sel:focus{outline:none;border-color:var(--green)}
+.rul-add-btn{padding:9px 20px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.rul-add-btn:hover{opacity:.88}
+.rul-body-in{width:100%;min-height:80px;padding:9px 12px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:13px;color:var(--text);resize:vertical;line-height:1.65;box-sizing:border-box}
+.rul-body-in:focus{outline:none;border-color:var(--green)}
+.rul-add-hint{font-size:10px;color:var(--text4);text-align:right;margin-top:-4px}
+/* Filter */
+.rul-filter-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.rulfbtn{font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--text3);cursor:pointer;white-space:nowrap;transition:all .12s;font-family:var(--sans)}
+.rulfbtn:hover{background:var(--surface3)}
+.rulfbtn.active{background:var(--text);color:#fff;border-color:transparent}
+.rulfbtn.f-rule.active{background:#1A4E9B}
+.rulfbtn.f-esc.active{background:#B91C1C}
+.rulfbtn.f-rem.active{background:#92400E}
+.rulfbtn.f-pol.active{background:#065F46}
+/* Entry cards */
+.rul-entry{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .15s}
+.rul-entry:hover{box-shadow:0 3px 14px rgba(0,0,0,.09)}
+.rul-entry-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .1s}
+.rul-entry-hdr:hover{background:#FAFAF6}
+.rul-type-badge{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+.rb-rule{background:#DBEAFE;color:#1E40AF}
+.rb-escalation{background:#FEE2E2;color:#991B1B}
+.rb-reminder{background:#FEF3C7;color:#92400E}
+.rb-policy{background:#D1FAE5;color:#065F46}
+.rul-entry-title{flex:1;font-size:14px;font-weight:600;color:var(--text);line-height:1.3}
+.rul-entry-ts{font-family:var(--mono);font-size:9px;color:var(--text4);flex-shrink:0;white-space:nowrap}
+.rul-chevron{font-size:12px;color:var(--text4);transition:transform .2s;flex-shrink:0}
+.rul-chevron.open{transform:rotate(180deg)}
+.rul-entry-body{display:none;padding:0 16px 16px}
+.rul-entry-body.open{display:block}
+/* Left accent stripe by type */
+.rul-entry.rt-rule{border-left:4px solid #1A4E9B}
+.rul-entry.rt-escalation{border-left:4px solid #B91C1C}
+.rul-entry.rt-reminder{border-left:4px solid #D97706}
+.rul-entry.rt-policy{border-left:4px solid #1A6B42}
+/* Body view */
+.rul-body-view{background:var(--surface2);border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--text2);line-height:1.75;white-space:pre-wrap;margin-bottom:10px;border-left:3px solid var(--border-md)}
+.rul-entry.rt-rule .rul-body-view{border-left-color:#1A4E9B}
+.rul-entry.rt-escalation .rul-body-view{border-left-color:#B91C1C}
+.rul-entry.rt-reminder .rul-body-view{border-left-color:#D97706}
+.rul-entry.rt-policy .rul-body-view{border-left-color:#1A6B42}
+/* Actions row */
+.rul-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.rul-action-btn{font-size:11px;padding:5px 12px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface);color:var(--text2);cursor:pointer;font-family:var(--sans);transition:all .12s}
+.rul-action-btn:hover{background:var(--surface2)}
+.rul-action-btn.danger{color:var(--red);border-color:var(--red-bg)}
+.rul-action-btn.danger:hover{background:var(--red-bg)}
+/* Edit panel */
+.rul-edit-panel{display:none;margin-top:10px;flex-direction:column;gap:8px}
+.rul-edit-panel.open{display:flex}
+.rul-edit-title{width:100%;padding:8px 11px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:13px;color:var(--text);font-weight:600}
+.rul-edit-title:focus{outline:none;border-color:var(--green)}
+.rul-edit-body{width:100%;min-height:90px;padding:8px 11px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:13px;color:var(--text);resize:vertical;line-height:1.65}
+.rul-edit-body:focus{outline:none;border-color:var(--green)}
+.rul-edit-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rul-edit-type{padding:7px 10px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:12px;color:var(--text2)}
+.rul-edit-save{padding:7px 18px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer}
+.rul-edit-cancel{padding:7px 12px;border-radius:var(--r);border:1px solid var(--border-md);background:transparent;color:var(--text2);font-family:var(--sans);font-size:12px;cursor:pointer}
+/* Empty state */
+.rul-empty{text-align:center;padding:4rem 2rem;color:var(--text4)}
+
 /* ── OUTSOURCE DAILY CHECKLIST ── */
 .oc-section{border-bottom:1px solid var(--border)}
 .oc-section:last-child{border-bottom:none}
@@ -858,6 +926,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
   <button class="ntab" onclick="goTab('calendar',this);renderCalendar()">📅 Calendar</button>
   <button class="ntab" onclick="goTab('reminders',this)">📝 Notes</button>
   <button class="ntab" onclick="goTab('outsource',this);renderOutsource()">✅ Outsource Checklist</button>
+  <button class="ntab" onclick="goTab('rules',this);renderRules()">⚖️ Rules & Escalation</button>
 </nav>
 
 <div class="body">
@@ -1156,6 +1225,43 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <input class="oc-new-sec-in" id="oc-new-sec" placeholder="New section name..." onkeydown="if(event.key==='Enter')ocAddSection()">
         <button class="oc-add-sec-btn" onclick="ocAddSection()">+ add section</button>
       </div>
+    </div>
+  </div>
+  <!-- RULES & ESCALATION -->
+  <div id="tab-rules" class="page">
+    <div class="sec-title">Rules &amp; Escalation</div>
+    <div class="sec-sub">Standing rules, escalation paths, reminders, and policies. Click any entry to expand or edit.</div>
+
+    <!-- Add form -->
+    <div class="rul-add-card" id="rul-add-card">
+      <div class="rul-add-row1">
+        <input class="rul-title-in" id="rul-title-in" placeholder="Title / subject..." onkeydown="if(event.key==='Enter')document.getElementById('rul-body-in').focus()">
+        <select class="rul-type-sel" id="rul-type-sel">
+          <option value="rule">📏 Rule</option>
+          <option value="escalation">🚨 Escalation</option>
+          <option value="reminder">🔔 Reminder</option>
+          <option value="policy">📜 Policy</option>
+        </select>
+        <button class="rul-add-btn" onclick="addRule()">+ Add</button>
+      </div>
+      <textarea class="rul-body-in" id="rul-body-in" placeholder="Describe the rule, escalation path, or policy in detail..." onkeydown="if(event.key==='Enter'&&event.metaKey)addRule()"></textarea>
+      <div class="rul-add-hint">⌘↵ to save</div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="rul-filter-bar">
+      <button class="rulfbtn active" onclick="filterRules('all',this)">All</button>
+      <button class="rulfbtn f-rule" onclick="filterRules('rule',this)">📏 Rules</button>
+      <button class="rulfbtn f-esc" onclick="filterRules('escalation',this)">🚨 Escalation</button>
+      <button class="rulfbtn f-rem" onclick="filterRules('reminder',this)">🔔 Reminders</button>
+      <button class="rulfbtn f-pol" onclick="filterRules('policy',this)">📜 Policies</button>
+    </div>
+
+    <div id="rul-list"></div>
+    <div class="rul-empty" id="rul-empty" style="display:none">
+      <div style="font-size:36px;margin-bottom:10px">⚖️</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text2);margin-bottom:6px">No entries yet</div>
+      <div style="font-size:13px;color:var(--text3)">Add your first rule, escalation path, or policy above.</div>
     </div>
   </div>
 
@@ -2909,7 +3015,7 @@ function importBackup(input){
 function exportBackup(silent=false){
   try{
     const data={_version:2,_exported:new Date().toISOString()};
-    [SK,QK,RK,TLK,CALK,HK,EODLK,'mbs_wkp_v1','mbs_goals_v1','mbs_et_v1',OCK].forEach(k=>{const v=fsGet(k);if(v)data[k]=v;});
+    [SK,QK,RK,TLK,CALK,HK,EODLK,'mbs_wkp_v1','mbs_goals_v1','mbs_et_v1',OCK,RULK].forEach(k=>{const v=fsGet(k);if(v)data[k]=v;});
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
@@ -3003,6 +3109,138 @@ function init(){
     setTimeout(()=>showToast('👋 Welcome! Data is auto-saved to the cloud. Open this URL on any browser to continue.'),1500);
   }
 }
+// ═══════════════════════════════════════════
+//  RULES & ESCALATION
+// ═══════════════════════════════════════════
+const RULK='mbs_rules_v1';
+let rulItems=loadRules();
+let currentRulFilter='all';
+
+function loadRules(){
+  try{const s=fsGet(RULK);if(s)return JSON.parse(s);}catch(e){}
+  return[];
+}
+function saveRules(){fsSet(RULK,JSON.stringify(rulItems));if(window._fbSave)window._fbSave();}
+
+const RUL_TYPE_LABELS={rule:'Rule',escalation:'Escalation',reminder:'Reminder',policy:'Policy'};
+const RUL_TYPE_ICONS={rule:'📏',escalation:'🚨',reminder:'🔔',policy:'📜'};
+const RUL_TYPE_BADGE={rule:'rb-rule',escalation:'rb-escalation',reminder:'rb-reminder',policy:'rb-policy'};
+const RUL_TYPE_STRIPE={rule:'rt-rule',escalation:'rt-escalation',reminder:'rt-reminder',policy:'rt-policy'};
+
+function addRule(){
+  const title=document.getElementById('rul-title-in').value.trim();
+  if(!title){document.getElementById('rul-title-in').focus();return;}
+  const body=document.getElementById('rul-body-in').value.trim();
+  const type=document.getElementById('rul-type-sel').value;
+  rulItems.unshift({id:Date.now(),title,body,type,ts:Date.now()});
+  document.getElementById('rul-title-in').value='';
+  document.getElementById('rul-body-in').value='';
+  saveRules();renderRules();
+  showToast('✓ Entry added');
+}
+
+function filterRules(f,btn){
+  currentRulFilter=f;
+  document.querySelectorAll('.rulfbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRules();
+}
+
+function renderRules(){
+  const list=document.getElementById('rul-list');
+  const empty=document.getElementById('rul-empty');
+  if(!list)return;
+  const filtered=currentRulFilter==='all'?rulItems:rulItems.filter(x=>x.type===currentRulFilter);
+  if(!filtered.length){list.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  list.innerHTML='';
+  filtered.forEach(item=>{
+    const card=document.createElement('div');
+    card.className=`rul-entry ${RUL_TYPE_STRIPE[item.type]||'rt-rule'}`;
+    card.id='rul-'+item.id;
+    const icon=RUL_TYPE_ICONS[item.type]||'📏';
+    const badgeCls=RUL_TYPE_BADGE[item.type]||'rb-rule';
+    const label=RUL_TYPE_LABELS[item.type]||'Rule';
+    const ts=new Date(item.ts).toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});
+    card.innerHTML=`
+      <div class="rul-entry-hdr" onclick="togRule(${item.id})">
+        <span class="rul-type-badge ${badgeCls}">${icon} ${label}</span>
+        <span class="rul-entry-title">${esc(item.title)}</span>
+        <span class="rul-entry-ts">${ts}</span>
+        <span class="rul-chevron" id="rulchev-${item.id}">▾</span>
+      </div>
+      <div class="rul-entry-body" id="rulbody-${item.id}">
+        <div class="rul-body-view" id="rulview-${item.id}">${item.body?esc(item.body).replace(/\n/g,'<br>'):'<span style="color:var(--text4);font-style:italic">No description added.</span>'}</div>
+        <div class="rul-actions">
+          <button class="rul-action-btn" onclick="togRulEdit(${item.id})">✏ Edit</button>
+          <button class="rul-action-btn" onclick="copyRule(${item.id})">📋 Copy</button>
+          <button class="rul-action-btn danger" onclick="delRule(${item.id})">🗑 Delete</button>
+        </div>
+        <div class="rul-edit-panel" id="ruledit-${item.id}">
+          <input class="rul-edit-title" id="rulet-${item.id}" value="${esc(item.title)}" placeholder="Title...">
+          <textarea class="rul-edit-body" id="ruleb-${item.id}">${esc(item.body)}</textarea>
+          <div class="rul-edit-row">
+            <select class="rul-edit-type" id="ruletype-${item.id}">
+              <option value="rule" ${item.type==='rule'?'selected':''}>📏 Rule</option>
+              <option value="escalation" ${item.type==='escalation'?'selected':''}>🚨 Escalation</option>
+              <option value="reminder" ${item.type==='reminder'?'selected':''}>🔔 Reminder</option>
+              <option value="policy" ${item.type==='policy'?'selected':''}>📜 Policy</option>
+            </select>
+            <button class="rul-edit-save" onclick="saveRulEdit(${item.id})">Save</button>
+            <button class="rul-edit-cancel" onclick="togRulEdit(${item.id})">Cancel</button>
+          </div>
+        </div>
+      </div>`;
+    list.appendChild(card);
+  });
+}
+
+function togRule(id){
+  const body=document.getElementById('rulbody-'+id);
+  const chev=document.getElementById('rulchev-'+id);
+  if(body)body.classList.toggle('open');
+  if(chev)chev.classList.toggle('open');
+}
+
+function togRulEdit(id){
+  const panel=document.getElementById('ruledit-'+id);
+  const view=document.getElementById('rulview-'+id);
+  if(!panel)return;
+  const isOpen=panel.classList.contains('open');
+  panel.classList.toggle('open');
+  if(view)view.style.display=isOpen?'block':'none';
+  if(!isOpen){
+    const inp=document.getElementById('rulet-'+id);
+    if(inp)setTimeout(()=>{inp.focus();inp.select();},50);
+  }
+}
+
+function saveRulEdit(id){
+  const item=rulItems.find(x=>x.id===id);if(!item)return;
+  const newTitle=document.getElementById('rulet-'+id).value.trim();
+  const newBody=document.getElementById('ruleb-'+id).value.trim();
+  const newType=document.getElementById('ruletype-'+id).value;
+  if(!newTitle)return;
+  item.title=newTitle;item.body=newBody;item.type=newType;
+  saveRules();renderRules();
+  // Re-expand the entry after re-render
+  setTimeout(()=>{togRule(id);},30);
+  showToast('✓ Entry updated');
+}
+
+function copyRule(id){
+  const item=rulItems.find(x=>x.id===id);if(!item)return;
+  const txt=`[${RUL_TYPE_LABELS[item.type]||'Rule'}] ${item.title}\n\n${item.body}`;
+  navigator.clipboard.writeText(txt).then(()=>showToast('📋 Copied!')).catch(()=>{});
+}
+
+function delRule(id){
+  if(!confirm('Delete this entry?'))return;
+  rulItems=rulItems.filter(x=>x.id!==id);
+  saveRules();renderRules();
+  showToast('Deleted','error');
+}
+
 // ═══════════════════════════════════════════
 //  OUTSOURCE DAILY CHECKLIST
 // ═══════════════════════════════════════════
