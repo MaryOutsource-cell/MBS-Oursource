@@ -220,21 +220,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .qi-name-in:focus{outline:none;background:var(--surface2)}
 .qi-dl-disp{font-family:var(--mono);font-size:10px;color:var(--red);background:var(--red-bg);padding:2px 7px;border-radius:20px;flex-shrink:0}
 .qi-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
-.qi-notes-tog,.qi-pdf-btn{font-size:11px;cursor:pointer;background:none;font-family:var(--sans);padding:2px 6px;border-radius:4px;transition:all .12s;border:1px solid var(--border-md);color:var(--text3)}
-.qi-notes-tog:hover,.qi-pdf-btn:hover{background:var(--surface2);color:var(--text)}
-.qi-pdf-btn{color:var(--blue);border-color:var(--blue-bg)}
-.qi-pdf-btn:hover{background:var(--blue-bg)}
-.qi-notes-panel{display:none;margin-top:6px}
-.qi-notes-panel.open{display:block}
-.qi-notes-area{width:100%;min-height:56px;padding:7px 10px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:12px;color:var(--text);resize:vertical;line-height:1.6;margin-bottom:6px}
-.qi-notes-area:focus{outline:none;border-color:var(--green)}
-.pdf-drop-zone{border:2px dashed var(--border-md);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;font-size:12px;color:var(--text3);margin-bottom:8px;transition:all .15s}
-.pdf-drop-zone:hover,.pdf-drop-zone.has-file{border-color:var(--green);color:var(--green);background:var(--green-lt)}
-.pdf-file-in{display:none}
-.ai-explain-btn{padding:5px 12px;border-radius:var(--r);border:1px solid var(--green);background:var(--green-lt);color:var(--green);font-family:var(--sans);font-size:12px;font-weight:500;cursor:pointer;transition:all .12s;margin-bottom:6px}
-.ai-explain-btn:disabled{opacity:.5;cursor:not-allowed}
-.ai-output{display:none;background:var(--surface2);border-left:3px solid var(--green);border-radius:0 var(--r) var(--r) 0;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.7;margin-top:6px;max-height:200px;overflow-y:auto}
-.ai-output.open{display:block}
+.qi-sop-btn{font-size:11px;cursor:pointer;background:none;font-family:var(--sans);padding:2px 8px;border-radius:4px;transition:all .12s;border:1px solid var(--border-md);color:var(--text3);font-weight:500}
+.qi-sop-btn:hover{background:#EDE9FE;color:#5B21B6;border-color:#C4B5FD}
+.qi-sop-btn.has-sop{background:#EDE9FE;border-color:#C4B5FD;color:#5B21B6;font-weight:600}
+
 .qi-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0}
 .qi-del-btn{background:none;border:none;cursor:pointer;color:var(--text4);font-size:16px;transition:color .12s;padding:2px}
 .qi-del-btn:hover{color:var(--red)}
@@ -314,28 +303,54 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .rem-save-btn{font-size:11px;color:#fff;background:var(--green);border:none;padding:4px 10px;border-radius:4px;cursor:pointer;display:none;margin-top:4px}
 .rem-empty{padding:3rem;text-align:center;color:var(--text4);font-size:13px}
 
-/* TASK LIST */
-.tl-filter-bar{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface2);flex-wrap:wrap}
-.tlfbtn{font-size:12px;font-weight:500;padding:4px 14px;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--text3);cursor:pointer;transition:all .12s}
-.tlfbtn:hover{background:var(--surface3)}
-.tlfbtn.active{background:var(--text);color:#fff;border-color:transparent}
-.tl-add-area{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.tlin,.tlsel{padding:7px 10px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:12px;color:var(--text)}
-.tlin{flex:1;min-width:160px}
-.tlin:focus,.tlsel:focus{outline:none;border-color:var(--green)}
-.tladd-btn{padding:8px 16px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s}
-.tl-table{width:100%;border-collapse:collapse}
-.tl-table th{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text4);padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface2)}
-.tl-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
-.tl-table tr:hover td{background:#FAFAF6}
-.tl-name-in,.tl-notes-in{width:100%;border:none;background:transparent;font-family:var(--sans);font-size:13px;color:var(--text);padding:2px 4px;border-radius:4px}
-.tl-notes-in{font-size:12px;color:var(--text2)}
-.tl-name-in:focus,.tl-notes-in:focus{outline:none;background:var(--surface2)}
-.tl-del{background:none;border:none;cursor:pointer;color:var(--text4);font-size:15px;padding:2px;border-radius:4px}
-.tl-del:hover{color:var(--red)}
-.tl-dayblock{margin-bottom:1rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;box-shadow:var(--shadow)}
-.tl-dayblock-hdr{padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
-.tl-day-empty{padding:14px;font-size:12px;color:var(--text4);text-align:center}
+/* TASK SOPs CARD GRID */
+.tsop-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.tsop-search{flex:1;min-width:180px;padding:9px 13px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface);font-family:var(--sans);font-size:13px;color:var(--text)}
+.tsop-search:focus{outline:none;border-color:var(--green)}
+.tsop-add-btn{padding:9px 18px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.tsop-add-btn:hover{opacity:.88}
+.tsop-add-panel{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--green);border-radius:var(--rlg);padding:14px 16px;margin-bottom:16px;box-shadow:0 0 0 3px var(--green-lt)}
+.tsop-add-in{flex:1;min-width:200px;padding:9px 13px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:13px;color:var(--text)}
+.tsop-add-in:focus{outline:none;border-color:var(--green)}
+.tsop-confirm-btn{padding:9px 18px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.tsop-confirm-btn:hover{opacity:.88}
+.tsop-cancel-btn{padding:9px 14px;border-radius:var(--r);border:1px solid var(--border-md);background:transparent;color:var(--text2);font-family:var(--sans);font-size:13px;cursor:pointer}
+.tsop-cancel-btn:hover{background:var(--surface2)}
+.tsop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.tsop-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rlg);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;transition:box-shadow .18s,border-color .18s;position:relative}
+.tsop-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.10);border-color:var(--border-md)}
+.tsop-card.has-sop{border-top:3px solid #7C3AED}
+.tsop-card-head{padding:14px 16px 10px;display:flex;align-items:flex-start;gap:10px}
+.tsop-card-icon{width:36px;height:36px;border-radius:10px;background:#EDE9FE;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.tsop-card-icon.empty{background:var(--surface2)}
+.tsop-card-meta{flex:1;min-width:0}
+.tsop-card-name{font-size:14px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tsop-card-count{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.tsop-card-del{background:none;border:none;cursor:pointer;color:var(--text4);font-size:15px;padding:2px 4px;border-radius:4px;transition:color .12s;flex-shrink:0;opacity:0;margin-top:-2px}
+.tsop-card:hover .tsop-card-del{opacity:1}
+.tsop-card-del:hover{color:var(--red)}
+.tsop-card-progress{padding:0 16px 10px}
+.tsop-prog-bar{height:5px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:4px}
+.tsop-prog-fill{height:100%;background:#7C3AED;border-radius:3px;transition:width .35s ease}
+.tsop-prog-fill.full{background:var(--green)}
+.tsop-prog-label{font-family:var(--mono);font-size:9px;color:var(--text4)}
+.tsop-card-preview{padding:0 16px 12px;flex:1}
+.tsop-preview-text{font-size:12px;color:var(--text3);line-height:1.55;font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tsop-preview-empty{font-size:12px;color:var(--text4);font-style:italic}
+.tsop-card-footer{padding:10px 16px;border-top:1px solid var(--border);background:var(--surface2);display:flex;gap:6px;align-items:center}
+.tsop-open-btn{flex:1;padding:7px 12px;border-radius:var(--r);border:none;background:#7C3AED;color:#fff;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;text-align:center}
+.tsop-open-btn:hover{opacity:.88}
+.tsop-open-btn.empty-btn{background:var(--surface3);color:var(--text3)}
+.tsop-open-btn.empty-btn:hover{background:var(--surface2);color:var(--text2)}
+.tsop-rename-btn{padding:7px 10px;border-radius:var(--r);border:1px solid var(--border-md);background:transparent;color:var(--text3);font-family:var(--sans);font-size:11px;cursor:pointer;transition:background .12s;white-space:nowrap}
+.tsop-rename-btn:hover{background:var(--surface3);color:var(--text2)}
+.tsop-empty{text-align:center;padding:4rem 2rem;color:var(--text4)}
+@media(max-width:600px){.tsop-grid{grid-template-columns:1fr}}
+
+/* Keep tl-sop-btn for queue usage */
+.tl-sop-btn{font-size:10px;padding:2px 8px;border-radius:10px;border:1px solid var(--blue-bg);background:var(--blue-bg);color:var(--blue);cursor:pointer;font-family:var(--sans);font-weight:500;white-space:nowrap;transition:all .12s}
+.tl-sop-btn:hover{background:var(--blue);color:#fff}
+.tl-sop-btn.has-sop{background:#EDE9FE;border-color:#C4B5FD;color:#5B21B6}
 
 /* CALENDAR */
 .cal-nav{display:flex;align-items:center;gap:10px;margin-bottom:12px}
@@ -562,6 +577,43 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .et-empty{padding:3rem;text-align:center;color:var(--text4);font-size:13px}
 
 .sdiv{border:none;border-top:1px solid var(--border);margin:1.25rem 0}
+/* ── OUTSOURCE DAILY CHECKLIST ── */
+.oc-section{border-bottom:1px solid var(--border)}
+.oc-section:last-child{border-bottom:none}
+.oc-sec-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px 6px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.oc-sec-name{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);flex:1}
+.oc-sec-time{font-family:var(--mono);font-size:10px;color:var(--text4);background:var(--surface3);padding:2px 8px;border-radius:20px}
+.oc-sec-edit-in{flex:1;border:none;background:var(--surface3);border-radius:4px;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text2);padding:3px 6px;letter-spacing:.04em;display:none}
+.oc-sec-edit-in:focus{outline:none;background:var(--surface2)}
+.oc-sec-time-in{width:120px;border:none;background:var(--surface3);border-radius:4px;font-family:var(--mono);font-size:10px;color:var(--text3);padding:3px 6px;display:none}
+.oc-sec-time-in:focus{outline:none}
+.oc-sec-del{background:none;border:none;cursor:pointer;color:var(--text4);font-size:14px;padding:2px 4px;border-radius:3px;transition:color .12s}
+.oc-sec-del:hover{color:var(--red)}
+.oc-sec-save{font-size:10px;background:var(--green);color:#fff;border:none;border-radius:4px;padding:2px 8px;cursor:pointer;display:none;font-family:var(--sans);font-weight:600}
+.oc-steps{padding:4px 0}
+.oc-step{display:flex;align-items:flex-start;gap:8px;padding:7px 14px;border-bottom:1px solid var(--border);transition:background .1s;group:hover}
+.oc-step:last-child{border-bottom:none}
+.oc-step:hover{background:#FAFAF6}
+.oc-step-cb{width:15px;height:15px;accent-color:var(--green);cursor:pointer;flex-shrink:0;margin-top:2px}
+.oc-step-text{flex:1;font-size:13px;color:var(--text);line-height:1.55;border:none;background:transparent;font-family:var(--sans);resize:none;overflow:hidden}
+.oc-step-text:focus{outline:none;background:var(--surface2);border-radius:4px;padding:2px 4px}
+.oc-step-text.done-txt{text-decoration:line-through;color:var(--text3)}
+.oc-step-del{background:none;border:none;cursor:pointer;color:var(--text4);font-size:13px;padding:1px 4px;border-radius:3px;transition:all .12s;flex-shrink:0;opacity:0}
+.oc-step:hover .oc-step-del{opacity:1}
+.oc-step-del:hover{color:var(--red);background:var(--red-bg)}
+.oc-add-row{display:flex;gap:6px;align-items:center;padding:7px 14px;border-top:1px solid var(--border);background:var(--surface2)}
+.oc-add-in{flex:1;padding:5px 10px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface);font-family:var(--sans);font-size:12px;color:var(--text)}
+.oc-add-in:focus{outline:none;border-color:var(--green)}
+.oc-add-btn{padding:5px 12px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.oc-add-btn:hover{opacity:.85}
+.oc-new-sec-in{flex:1;padding:6px 10px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface);font-family:var(--sans);font-size:12px;color:var(--text)}
+.oc-new-sec-in:focus{outline:none;border-color:var(--green)}
+.oc-add-sec-btn{padding:6px 14px;border-radius:var(--r);border:1px solid var(--border-md);background:transparent;color:var(--text2);font-family:var(--sans);font-size:12px;cursor:pointer;transition:background .12s}
+.oc-add-sec-btn:hover{background:var(--surface3)}
+.oc-reset-btn{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-md);background:transparent;color:var(--text3);cursor:pointer;font-family:var(--sans);transition:all .12s;margin-left:auto}
+.oc-reset-btn:hover{background:var(--red-bg);color:var(--red);border-color:var(--red)}
+@media(max-width:700px){.oc-step-del{opacity:1}}
+
 @media(max-width:700px){
   .body{padding:1rem}
   .wk-grid{grid-template-columns:repeat(2,1fr)}
@@ -801,10 +853,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
   <button class="ntab" onclick="goTab('queue',this)">🗂 Queue <span class="badge" id="q-badge" style="display:none">0</span></button>
   <button class="ntab" onclick="goTab('eod',this);buildEOD()">📤 EOD Report</button>
   <button class="ntab" onclick="goTab('efficiency',this);renderEfficiency()">⚡ Efficiency</button>
-  <button class="ntab" onclick="goTab('tasklist',this);renderTaskList()">📌 Task List</button>
+  <button class="ntab" onclick="goTab('tasklist',this);renderTaskList()">📋 Task SOPs</button>
   <button class="ntab" onclick="goTab('emailtpl',this);renderET()">📨 Email Templates</button>
   <button class="ntab" onclick="goTab('calendar',this);renderCalendar()">📅 Calendar</button>
   <button class="ntab" onclick="goTab('reminders',this)">📝 Notes</button>
+  <button class="ntab" onclick="goTab('outsource',this);renderOutsource()">✅ Outsource Checklist</button>
 </nav>
 
 <div class="body">
@@ -1001,50 +1054,25 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     </div>
   </div>
 
-  <!-- TASK LIST -->
+  <!-- TASK SOPs -->
   <div id="tab-tasklist" class="page">
-    <div class="sec-title">Task List</div>
-    <div class="sec-sub">All recurring and one-time tasks. Filter by day.</div>
-    <div class="card">
-      <div class="tl-filter-bar">
-        <button class="tlfbtn active" onclick="filterTL('all',this)">All Days</button>
-        <button class="tlfbtn" onclick="filterTL('monday',this)">Monday</button>
-        <button class="tlfbtn" onclick="filterTL('tuesday',this)">Tuesday</button>
-        <button class="tlfbtn" onclick="filterTL('wednesday',this)">Wednesday</button>
-        <button class="tlfbtn" onclick="filterTL('thursday',this)">Thursday</button>
-        <button class="tlfbtn" onclick="filterTL('friday',this)">Friday</button>
-        <button class="tlfbtn" onclick="filterTL('all-days',this)">Any Day</button>
-      </div>
-      <div class="tl-add-area">
-        <input class="tlin" id="tl-name" placeholder="Task name..." onkeydown="if(event.key==='Enter')addTLItem()">
-        <select class="tlsel" id="tl-freq">
-          <option value="daily">Daily</option>
-          <option value="weekly" selected>Weekly</option>
-          <option value="biweekly">Bi-weekly</option>
-          <option value="monthly">Monthly</option>
-          <option value="bimonthly">Bi-monthly</option>
-          <option value="quarterly">Quarterly</option>
-          <option value="yearly">Yearly</option>
-          <option value="onetime">One-time</option>
-        </select>
-        <select class="tlsel" id="tl-day">
-          <option value="all-days">Any day</option>
-          <option value="monday">Monday</option>
-          <option value="tuesday">Tuesday</option>
-          <option value="wednesday">Wednesday</option>
-          <option value="thursday">Thursday</option>
-          <option value="friday">Friday</option>
-        </select>
-        <button class="tladd-btn" onclick="addTLItem()">+ Add</button>
-      </div>
-      <div style="overflow-x:auto">
-        <table class="tl-table">
-          <thead><tr><th style="width:28px">#</th><th>Task</th><th style="width:100px">Frequency</th><th style="width:90px">Day</th><th>Notes</th><th style="width:80px">SOP</th><th style="width:30px"></th></tr></thead>
-          <tbody id="tl-body"></tbody>
-        </table>
-      </div>
+    <div class="sec-title">Task SOPs</div>
+    <div class="sec-sub">Step-by-step guides for every recurring task. Click a card to open its full SOP.</div>
+    <div class="tsop-toolbar">
+      <input class="tsop-search" id="tsop-search" placeholder="🔍 Search tasks..." oninput="renderTaskList()">
+      <button class="tsop-add-btn" onclick="tsopShowAdd()">+ New Task SOP</button>
     </div>
-    <div id="tl-dayview" style="margin-top:1.5rem"></div>
+    <div class="tsop-add-panel" id="tsop-add-panel" style="display:none">
+      <input class="tsop-add-in" id="tl-name" placeholder="Task name..." onkeydown="if(event.key==='Enter')addTLItem()">
+      <button class="tsop-confirm-btn" onclick="addTLItem()">Create SOP Card</button>
+      <button class="tsop-cancel-btn" onclick="tsopHideAdd()">Cancel</button>
+    </div>
+    <div class="tsop-grid" id="tsop-grid"></div>
+    <div class="tsop-empty" id="tsop-empty" style="display:none">
+      <div style="font-size:36px;margin-bottom:12px">📋</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text2);margin-bottom:6px">No SOP cards yet</div>
+      <div style="font-size:13px;color:var(--text3)">Click "+ New Task SOP" to create your first guide.</div>
+    </div>
   </div>
 
   <!-- EMAIL TEMPLATES -->
@@ -1115,6 +1143,19 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
         <textarea class="rem-body-in" id="rem-body" placeholder="Body / content..."></textarea>
       </div>
       <div id="rem-list"></div>
+    </div>
+  </div>
+
+  <!-- OUTSOURCE DAILY CHECKLIST -->
+  <div id="tab-outsource" class="page">
+    <div class="sec-title">Outsource Daily Checklist</div>
+    <div class="sec-sub" id="oc-sub">2:00–6:00 AM PHT (= 3–6 PM MT previous day). Hover steps to edit or delete.</div>
+    <div class="card" id="oc-card">
+      <div id="oc-sections"></div>
+      <div style="padding:12px 14px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;background:var(--surface2)">
+        <input class="oc-new-sec-in" id="oc-new-sec" placeholder="New section name..." onkeydown="if(event.key==='Enter')ocAddSection()">
+        <button class="oc-add-sec-btn" onclick="ocAddSection()">+ add section</button>
+      </div>
     </div>
   </div>
 
@@ -1922,7 +1963,7 @@ function calcWeekEarnings(rateVal){
 // ═══════════════════════════════════════════
 function addQItem(){
   const inp=document.getElementById('q-input');const name=inp.value.trim();if(!name){inp.focus();return;}
-  const item={id:Date.now(),name,urg:document.getElementById('q-urg').value,cat:document.getElementById('q-cat').value,deadline:document.getElementById('q-deadline').value||'',notes:'',done:false,ts:Date.now(),action:'Not started',pdfName:'',pdfData:''};
+  const item={id:Date.now(),name,urg:document.getElementById('q-urg').value,cat:document.getElementById('q-cat').value,deadline:document.getElementById('q-deadline').value||'',done:false,ts:Date.now(),action:'Not started',sop:{steps:[],photos:[],notes:''}};
   qItems.unshift(item);inp.value='';document.getElementById('q-deadline').value='';
   saveQ();renderQ();checkDeadlines();
   // Refresh tracker dropdowns so new queue item appears
@@ -1942,8 +1983,13 @@ function renderQ(){
     const show=shouldShowQ(item,ap);
     const div=document.createElement('div');
     div.className=`qi qi-${item.urg} ${item.done?'qi-done':''} ${show?'':'qi-hidden'}`;div.id='qi-'+item.id;
+    if(!item.sop)item.sop={steps:[],photos:[],notes:''};
     const actionOpts=ACTIONS.map(a=>`<option value="${a}" ${item.action===a?'selected':''}>${a}</option>`).join('');
     const dlDisp=item.deadline?`<span class="qi-dl-disp">📅 ${new Date(item.deadline).toLocaleString('en-PH',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</span>`:'';
+    const hasSop=item.sop.steps.length>0||item.sop.photos.length>0||item.sop.notes;
+    const doneSteps=item.sop.steps.filter(s=>s.done).length;
+    const totalSteps=item.sop.steps.length;
+    const pct=totalSteps>0?Math.round(doneSteps/totalSteps*100):0;
     div.innerHTML=`
       <div class="qi-left"><span class="qi-urg urg-${item.urg}">${item.urg==='red'?'Urgent':item.urg==='amber'?'Asked':'Planned'}</span><div class="qi-ts">${fmtDT(new Date(item.ts))}</div></div>
       <div class="qi-body">
@@ -1953,8 +1999,8 @@ function renderQ(){
         </div>
         <div class="qi-meta">
           <span class="qi-cat-badge cat-${item.cat==='finance'?'fin':item.cat==='email'?'email':item.cat==='new'?'new':item.cat==='deadline'?'dl':'other'}">${catIcon(item.cat)} ${catLabel(item.cat)}</span>
-          <button class="qi-notes-tog" onclick="togQNotes(${item.id},this)">Notes ▾</button>
-          <button class="qi-pdf-btn" onclick="trigPDF(${item.id})">📎 PDF</button>
+          <button class="qi-sop-btn ${hasSop?'has-sop':''}" id="qsopbtn-${item.id}" onclick="openQueueSOP(${item.id})">${hasSop?'📋 SOP':'+ SOP'}</button>
+          ${totalSteps>0?`<span style="font-size:9px;color:var(--text4);font-family:var(--mono)">${doneSteps}/${totalSteps}</span>`:''}
           <select style="font-size:10px;padding:2px 5px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text2);" onchange="chgUrg(${item.id},this.value)"><option value="red" ${item.urg==='red'?'selected':''}>🔴 Urgent</option><option value="amber" ${item.urg==='amber'?'selected':''}>🟡 Asked</option><option value="gray" ${item.urg==='gray'?'selected':''}>⚫ Planned</option></select>
           <select style="font-size:10px;padding:2px 5px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text2);" onchange="chgCat(${item.id},this.value)"><option value="finance" ${item.cat==='finance'?'selected':''}>💰 Finance</option><option value="email" ${item.cat==='email'?'selected':''}>📧 Email</option><option value="new" ${item.cat==='new'?'selected':''}>💡 New</option><option value="deadline" ${item.cat==='deadline'?'selected':''}>📅 Deadline</option><option value="other" ${item.cat==='other'?'selected':''}>📌 Other</option></select>
         </div>
@@ -1962,13 +2008,7 @@ function renderQ(){
           <span class="q-action-label">Action:</span>
           <select class="asel" style="width:auto;min-width:160px" onchange="updQAction(${item.id},this.value)">${actionOpts}</select>
         </div>
-        <div class="qi-notes-panel" id="qnp-${item.id}">
-          <input type="file" class="pdf-file-in" id="pdf-in-${item.id}" accept=".pdf" onchange="handlePDF(${item.id},this)">
-          <div class="pdf-drop-zone ${item.pdfName?'has-file':''}" id="pdz-${item.id}" onclick="document.getElementById('pdf-in-${item.id}').click()" ondragover="event.preventDefault()" ondrop="handlePDFDrop(${item.id},event)">${item.pdfName?`📄 ${esc(item.pdfName)}`:'📎 Click or drag a PDF'}</div>
-          <textarea class="qi-notes-area" placeholder="Notes..." oninput="updQNotes(${item.id},this.value)">${esc(item.notes)}</textarea>
-          <button class="ai-explain-btn" id="ai-btn-${item.id}" onclick="aiExplain(${item.id})" ${!item.notes&&!item.pdfData?'disabled':''}>✦ AI: explain this task</button>
-          <div class="ai-output" id="ai-out-${item.id}"></div>
-        </div>
+        ${totalSteps>0?`<div class="sop-progress" style="margin-top:4px;max-width:200px"><div class="sop-progress-fill" style="width:${pct}%"></div></div>`:''}
       </div>
       <div class="qi-right">
         <button class="qi-del-btn" onclick="delQ(${item.id})">×</button>
@@ -1992,31 +2032,21 @@ function catLabel(c){return c==='finance'?'Finance':c==='email'?'Email':c==='new
 function catIcon(c){return c==='finance'?'💰':c==='email'?'📧':c==='new'?'💡':c==='deadline'?'📅':'📌';}
 function updQN(id,v){const i=qItems.find(x=>x.id===id);if(i){i.name=v;saveQ();}}
 function updQAction(id,v){const i=qItems.find(x=>x.id===id);if(i){i.action=v;saveQ();}}
-function updQNotes(id,v){const i=qItems.find(x=>x.id===id);if(i){i.notes=v;saveQ();const ab=document.getElementById('ai-btn-'+id);if(ab)ab.disabled=!v&&!i.pdfData;}}
-function togQNotes(id,btn){const p=document.getElementById('qnp-'+id);if(!p)return;p.classList.toggle('open');btn.textContent=p.classList.contains('open')?'Notes ▴':'Notes ▾';}
 function chgUrg(id,v){const i=qItems.find(x=>x.id===id);if(i){i.urg=v;saveQ();renderQ();checkDeadlines();}}
 function chgCat(id,v){const i=qItems.find(x=>x.id===id);if(i){i.cat=v;saveQ();renderQ();}}
 function togDoneQ(id){const i=qItems.find(x=>x.id===id);if(i){i.done=!i.done;saveQ();renderQ();checkDeadlines();}}
 function delQ(id){if(!confirm('Remove?'))return;qItems=qItems.filter(x=>x.id!==id);saveQ();renderQ();checkDeadlines();}
-function trigPDF(id){document.getElementById('pdf-in-'+id)?.click();}
-function handlePDF(id,input){
-  const file=input.files[0];if(!file)return;
-  const r=new FileReader();r.onload=e=>{const i=qItems.find(x=>x.id===id);if(!i)return;i.pdfName=file.name;i.pdfData=e.target.result;saveQ();const dz=document.getElementById('pdz-'+id);if(dz){dz.textContent=`📄 ${file.name}`;dz.classList.add('has-file');}const ab=document.getElementById('ai-btn-'+id);if(ab)ab.disabled=false;};r.readAsDataURL(file);
-}
-function handlePDFDrop(id,e){e.preventDefault();const file=e.dataTransfer.files[0];if(!file||file.type!=='application/pdf')return;handlePDF(id,{files:[file]});}
-async function aiExplain(id){
+
+// ── Queue SOP ──
+function openQueueSOP(id){
   const item=qItems.find(x=>x.id===id);if(!item)return;
-  const outEl=document.getElementById('ai-out-'+id),btn=document.getElementById('ai-btn-'+id);
-  if(!outEl||!btn)return;
-  outEl.classList.add('open');outEl.innerHTML='<span style="color:var(--text3);font-style:italic">✦ Thinking...</span>';btn.disabled=true;
-  try{
-    const messages=item.pdfData?[{role:'user',content:[{type:'document',source:{type:'base64',media_type:'application/pdf',data:item.pdfData.split(',')[1]}},{type:'text',text:`Task: "${item.name}". Notes: ${item.notes||'none'}. Summarize and explain what I need to do, step by step, in simple terms. Flag urgent items.`}]}]:[{role:'user',content:`Task: "${item.name}". Notes: ${item.notes||'(none)'}. Explain simply: 1) What is this? 2) Steps to do it 3) Watch out for 4) Time estimate.`}];
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages})});
-    const data=await res.json();
-    const text=data.content?.map(c=>c.text||'').join('')||'No response.';
-    outEl.innerHTML=text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-  }catch(err){outEl.innerHTML='<span style="color:var(--red)">Connection error.</span>';}
-  btn.disabled=false;
+  if(!item.sop)item.sop={steps:[],photos:[],notes:''};
+  _sopQueueId=id;_sopIdx=null;
+  _sopData=JSON.parse(JSON.stringify(item.sop));
+  document.getElementById('sop-modal-title').textContent=item.name+' — SOP';
+  document.getElementById('sop-notes-area').value=_sopData.notes||'';
+  renderSOPChecklist();renderSOPPhotos();
+  document.getElementById('sop-modal').classList.add('open');
 }
 
 // ═══════════════════════════════════════════
@@ -2263,54 +2293,104 @@ function delRem(id){if(!confirm('Delete?'))return;remItems=remItems.filter(x=>x.
 // ═══════════════════════════════════════════
 //  TASK LIST
 // ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+//  TASK SOPs — card grid
+// ═══════════════════════════════════════════
+const TSOP_ICONS=['📋','📝','🔧','📊','📧','💰','🗂','⚙️','📌','🎯','🔍','📤','✅','🏷️','🔄'];
+function tsopIcon(name){
+  const n=name.toLowerCase();
+  if(n.includes('email')||n.includes('mail'))return'📧';
+  if(n.includes('finance')||n.includes('invoice')||n.includes('bill'))return'💰';
+  if(n.includes('report')||n.includes('eod'))return'📤';
+  if(n.includes('check')||n.includes('review')||n.includes('audit'))return'🔍';
+  if(n.includes('docusign')||n.includes('sign')||n.includes('agreement'))return'✅';
+  if(n.includes('post')||n.includes('social')||n.includes('buffer'))return'🏷️';
+  if(n.includes('job')||n.includes('project'))return'🗂';
+  if(n.includes('coi')||n.includes('insur'))return'🔧';
+  return'📋';
+}
+
 function addTLItem(){
-  const n=document.getElementById('tl-name');const name=n.value.trim();if(!name){n.focus();return;}
-  tlItems.push({id:Date.now(),name,freq:document.getElementById('tl-freq').value,day:document.getElementById('tl-day').value,notes:'',sop:{steps:[],photos:[],notes:''}});
-  n.value='';saveTL();renderTaskList();
+  const n=document.getElementById('tl-name');
+  const name=n.value.trim();if(!name){n.focus();return;}
+  tlItems.push({id:Date.now(),name,freq:'weekly',day:'all-days',notes:'',sop:{steps:[],photos:[],notes:''}});
+  n.value='';tsopHideAdd();saveTL();renderTaskList();
   rerenderAllTrackerDropdowns();
 }
-function filterTL(f,btn){currentTLFilter=f;document.querySelectorAll('.tlfbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTaskList();}
+function tsopShowAdd(){
+  document.getElementById('tsop-add-panel').style.display='flex';
+  setTimeout(()=>document.getElementById('tl-name').focus(),50);
+}
+function tsopHideAdd(){document.getElementById('tsop-add-panel').style.display='none';}
+
 function renderTaskList(){
-  const tbody=document.getElementById('tl-body');tbody.innerHTML='';
-  if(!tlItems.length){tbody.innerHTML=`<tr><td colspan="7" style="padding:2.5rem;text-align:center;color:var(--text4)">No tasks yet.</td></tr>`;}
-  else{
-    tlItems.forEach((item,idx)=>{
-      // Migrate old items without sop
-      if(!item.sop)item.sop={steps:[],photos:[],notes:''};
-      const show=currentTLFilter==='all'||item.day===currentTLFilter||(currentTLFilter==='all-days'&&item.day==='all-days');
-      const tr=document.createElement('tr');if(!show)tr.style.display='none';
-      const fo=['daily','weekly','biweekly','monthly','bimonthly','quarterly','yearly','onetime'].map(f=>`<option value="${f}" ${item.freq===f?'selected':''}>${FREQ_L[f]}</option>`).join('');
-      const do_=['all-days','monday','tuesday','wednesday','thursday','friday'].map(d=>`<option value="${d}" ${item.day===d?'selected':''}>${DAY_L[d]}</option>`).join('');
-      const hasSop=item.sop.steps.length>0||item.sop.photos.length>0||item.sop.notes;
-      const doneSteps=item.sop.steps.filter(s=>s.done).length;
-      const totalSteps=item.sop.steps.length;
-      const pct=totalSteps>0?Math.round(doneSteps/totalSteps*100):0;
-      const sopBtn=`<td style="padding:4px 8px;white-space:nowrap">
-        <button class="tl-sop-btn ${hasSop?'has-sop':''}" onclick="openSOP(${idx})">${hasSop?'📋 View SOP':'+ SOP'}</button>
-        ${totalSteps>0?`<div class="sop-progress" style="margin-top:3px"><div class="sop-progress-fill" style="width:${pct}%"></div></div><div style="font-size:9px;color:var(--text4);text-align:center;margin-top:1px">${doneSteps}/${totalSteps}</div>`:''}
-      </td>`;
-      tr.innerHTML=`<td class="tnum">${idx+1}</td><td><input class="tl-name-in" value="${esc(item.name)}" oninput="tlItems[${idx}].name=this.value;saveTL()"></td><td><select class="tlsel" style="font-size:11px;padding:3px 6px" onchange="tlItems[${idx}].freq=this.value;saveTL();renderTaskList()">${fo}</select></td><td><select class="tlsel" style="font-size:11px;padding:3px 6px" onchange="tlItems[${idx}].day=this.value;saveTL();renderTaskList()">${do_}</select></td><td><input class="tl-notes-in" value="${esc(item.notes)}" placeholder="Notes..." oninput="tlItems[${idx}].notes=this.value;saveTL()"></td>${sopBtn}<td><button class="tl-del" onclick="delTL(${idx})">×</button></td>`;
-      tbody.appendChild(tr);
-    });
-  }
-  const dv=document.getElementById('tl-dayview');dv.innerHTML='';
-  if(currentTLFilter!=='all')return;
-  dv.innerHTML=`<div class="sec-title" style="margin-bottom:10px">Full Week View</div>`;
-  ['monday','tuesday','wednesday','thursday','friday'].forEach(dk=>{
-    const dt=tlItems.filter(t=>t.day===dk||t.day==='all-days');
-    const b=document.createElement('div');b.className='tl-dayblock';
-    b.innerHTML=`<div class="tl-dayblock-hdr">${DAY_L[dk]}</div>`;
-    if(!dt.length){b.innerHTML+=`<div class="tl-day-empty">No tasks.</div>`;}
-    else{const tbl=document.createElement('table');tbl.style.cssText='width:100%;border-collapse:collapse;font-size:12px';dt.forEach((t,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td style="padding:6px 14px;color:var(--text4);font-family:var(--mono);font-size:10px;border-bottom:1px solid var(--border);width:28px">${i+1}</td><td style="padding:6px 14px;border-bottom:1px solid var(--border)">${esc(t.name)}</td><td style="padding:6px 14px;border-bottom:1px solid var(--border)"><span style="font-size:10px;background:var(--blue-bg);color:var(--blue);padding:2px 7px;border-radius:10px">${FREQ_L[t.freq]}</span></td><td style="padding:6px 14px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text3)">${esc(t.notes)}</td>`;tbl.appendChild(tr);});b.appendChild(tbl);}
-    dv.appendChild(b);
+  const grid=document.getElementById('tsop-grid');
+  const empty=document.getElementById('tsop-empty');
+  if(!grid)return;
+  const q=(document.getElementById('tsop-search')?.value||'').toLowerCase().trim();
+  const visible=tlItems.filter(item=>!q||item.name.toLowerCase().includes(q));
+  if(!visible.length){grid.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  grid.innerHTML='';
+  visible.forEach((item,vi)=>{
+    const idx=tlItems.indexOf(item);
+    if(!item.sop)item.sop={steps:[],photos:[],notes:''};
+    const hasSop=item.sop.steps.length>0||item.sop.photos.length>0||item.sop.notes;
+    const total=item.sop.steps.length;
+    const done=item.sop.steps.filter(s=>s.done).length;
+    const pct=total>0?Math.round(done/total*100):0;
+    const firstStep=item.sop.steps[0]?.text||'';
+    const icon=tsopIcon(item.name);
+
+    const card=document.createElement('div');
+    card.className='tsop-card'+(hasSop?' has-sop':'');
+    card.innerHTML=`
+      <div class="tsop-card-head">
+        <div class="tsop-card-icon${hasSop?'':' empty'}">${icon}</div>
+        <div class="tsop-card-meta">
+          <div class="tsop-card-name" title="${esc(item.name)}">${esc(item.name)}</div>
+          <div class="tsop-card-count">${total>0?total+' step'+(total===1?'':'s')+(done>0?' · '+done+' done':''):'No steps yet'}</div>
+        </div>
+        <button class="tsop-card-del" title="Delete" onclick="delTL(${idx})">×</button>
+      </div>
+      ${total>0?`
+      <div class="tsop-card-progress">
+        <div class="tsop-prog-bar"><div class="tsop-prog-fill${pct===100?' full':''}" style="width:${pct}%"></div></div>
+        <div class="tsop-prog-label">${pct}% complete</div>
+      </div>`:''}
+      <div class="tsop-card-preview">
+        ${firstStep
+          ?`<div class="tsop-preview-text">Step 1: ${esc(firstStep)}</div>`
+          :`<div class="tsop-preview-empty">No steps yet — open to add your guide.</div>`}
+      </div>
+      <div class="tsop-card-footer">
+        <button class="tsop-open-btn${hasSop?'':' empty-btn'}" onclick="openSOP(${idx})">
+          ${hasSop?'📋 Open SOP Guide':'+ Build SOP Guide'}
+        </button>
+        <button class="tsop-rename-btn" onclick="tsopRename(${idx})">✏ Rename</button>
+      </div>`;
+    grid.appendChild(card);
   });
 }
-function delTL(idx){if(!confirm('Remove?'))return;tlItems.splice(idx,1);saveTL();renderTaskList();}
+
+function tsopRename(idx){
+  const item=tlItems[idx];if(!item)return;
+  const newName=prompt('Rename task:',item.name);
+  if(newName&&newName.trim()){item.name=newName.trim();saveTL();renderTaskList();}
+}
+function delTL(idx){
+  if(!confirm('Delete this SOP card?'))return;
+  tlItems.splice(idx,1);saveTL();renderTaskList();
+  rerenderAllTrackerDropdowns();
+}
+// Keep stubs for legacy calls
+function filterTL(){};
 
 // ═══════════════════════════════════════════
 //  SOP CARD MODAL
 // ═══════════════════════════════════════════
 let _sopIdx=null;
+let _sopQueueId=null;
 let _sopData={steps:[],photos:[],notes:''};
 
 function openSOP(idx){
@@ -2323,12 +2403,17 @@ function openSOP(idx){
   renderSOPChecklist();renderSOPPhotos();
   document.getElementById('sop-modal').classList.add('open');
 }
-function closeSOP(){document.getElementById('sop-modal').classList.remove('open');_sopIdx=null;}
+function closeSOP(){document.getElementById('sop-modal').classList.remove('open');_sopIdx=null;_sopQueueId=null;}
 function saveSOP(){
-  if(_sopIdx===null)return;
   _sopData.notes=document.getElementById('sop-notes-area').value;
-  tlItems[_sopIdx].sop=JSON.parse(JSON.stringify(_sopData));
-  saveTL();closeSOP();renderTaskList();
+  if(_sopQueueId!==null){
+    const item=qItems.find(x=>x.id===_sopQueueId);
+    if(item){item.sop=JSON.parse(JSON.stringify(_sopData));saveQ();renderQ();}
+  } else if(_sopIdx!==null){
+    tlItems[_sopIdx].sop=JSON.parse(JSON.stringify(_sopData));
+    saveTL();renderTaskList();
+  }
+  closeSOP();
   showToast('✓ SOP saved');
 }
 function sopAddStep(){
@@ -2824,7 +2909,7 @@ function importBackup(input){
 function exportBackup(silent=false){
   try{
     const data={_version:2,_exported:new Date().toISOString()};
-    [SK,QK,RK,TLK,CALK,HK,EODLK,'mbs_wkp_v1','mbs_goals_v1','mbs_et_v1'].forEach(k=>{const v=fsGet(k);if(v)data[k]=v;});
+    [SK,QK,RK,TLK,CALK,HK,EODLK,'mbs_wkp_v1','mbs_goals_v1','mbs_et_v1',OCK].forEach(k=>{const v=fsGet(k);if(v)data[k]=v;});
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
@@ -2918,6 +3003,168 @@ function init(){
     setTimeout(()=>showToast('👋 Welcome! Data is auto-saved to the cloud. Open this URL on any browser to continue.'),1500);
   }
 }
+// ═══════════════════════════════════════════
+//  OUTSOURCE DAILY CHECKLIST
+// ═══════════════════════════════════════════
+const OCK='mbs_oc_v1';
+
+const OC_DEFAULT=[
+  {id:1,name:'START',time:'2:00 AM',steps:[
+    {id:101,text:'WhatsApp call Mary Mym — get today\'s priorities and clarifications from yesterday EOD',done:false},
+    {id:102,text:'Start timer in Monday.com for first task',done:false}
+  ]},
+  {id:2,name:'EMAIL TRIAGE',time:'2:15–3:00 AM',steps:[
+    {id:201,text:'Open Outlook — scan ALL unread emails',done:false},
+    {id:202,text:'No-action emails → move to correct folder',done:false},
+    {id:203,text:'Action-needed emails → list them for Mary',done:false},
+    {id:204,text:'CAD from Shery? → Open GTC email (verify From = GTC not MBS) → NEW email to customer → attach CAD → CC Mike, Debbi, Mary',done:false},
+    {id:205,text:'Customer/vendor reply needed? → Draft 3–6 sentences ONLY → NO pricing, tax, or contract → send draft to Mary first; do NOT send to customer',done:false}
+  ]},
+  {id:3,name:'DOCUSIGN',time:'3:00–3:45 AM',steps:[
+    {id:301,text:'Open Mike\'s Notes tab FIRST — every single time',done:false},
+    {id:302,text:'Confirm you have the LATEST agreement version (unsure? STOP and ask Mary)',done:false},
+    {id:303,text:'Check customer name, invoice number, job details all match',done:false},
+    {id:304,text:'Prepare agreement — DO NOT send — send to Mary for approval first',done:false},
+    {id:305,text:'If Mary approves: Signer order — 1st Customer (signer), 2nd Mike corporate email (signer), 3rd Jake (CC only)',done:false},
+    {id:306,text:'Place initials, signature, name, title, date fields → Send → note in EOD',done:false}
+  ]},
+  {id:4,name:'COI',time:'3:45–4:00 AM',steps:[
+    {id:401,text:'Check if request has attached sample or requirements',done:false},
+    {id:402,text:'No special instructions → contact correct insurer: Gen Liability/Umbrella = biBerk | Auto = Dorothy | Workers Comp = Victor',done:false},
+    {id:403,text:'Special requirements → relay exact requirements to insurer',done:false},
+    {id:404,text:'COI received → compare vs requirements line by line: coverage type, amounts, holder name, dates',done:false},
+    {id:405,text:'List ANY mismatch → send comparison to Mary → DO NOT instruct insurer to change anything until Mary approves',done:false},
+    {id:406,text:'No mismatches → forward COI to customer',done:false}
+  ]},
+  {id:5,name:'BUFFER POSTS',time:'4:00–4:00 AM',steps:[
+    {id:501,text:'Check if Mary sent a post to schedule',done:false},
+    {id:502,text:'Post only — NO changes to captions, design, or hashtags',done:false},
+    {id:503,text:'Forward to Kaylan following same format Mary used previously (check sent items)',done:false}
+  ]},
+  {id:6,name:'OPEN JOBS CHECK',time:'5:00–5:45 AM',steps:[
+    {id:601,text:'Open approved jobs list in JobTread',done:false},
+    {id:602,text:'Check each job for missing expense documents or unrecorded bills',done:false},
+    {id:603,text:'List missing items → include in EOD to Mary — do NOT add anything without instruction',done:false}
+  ]},
+  {id:7,name:'EOD REPORT',time:'5:45–6:00 AM',steps:[
+    {id:701,text:'Stop timer for each task in Monday.com',done:false},
+    {id:702,text:'Send WhatsApp EOD to Mary: Completed / Pending+reason / Needs Mary / Unsure about',done:false}
+  ]}
+];
+
+function loadOC(){
+  try{const s=fsGet(OCK);if(s)return JSON.parse(s);}catch(e){}
+  return JSON.parse(JSON.stringify(OC_DEFAULT));
+}
+function saveOC(){fsSet(OCK,JSON.stringify(ocData));if(window._fbSave)window._fbSave();}
+let ocData=loadOC();
+
+function renderOutsource(){
+  const el=document.getElementById('oc-sections');if(!el)return;
+  el.innerHTML='';
+  ocData.forEach((sec,si)=>{
+    const sdiv=document.createElement('div');sdiv.className='oc-section';sdiv.id='oc-sec-'+sec.id;
+
+    // Section header
+    const hdr=document.createElement('div');hdr.className='oc-sec-hdr';
+    hdr.innerHTML=`
+      <span class="oc-sec-name" id="ocn-${sec.id}">${esc(sec.name)}</span>
+      <input class="oc-sec-edit-in" id="ocne-${sec.id}" value="${esc(sec.name)}" onkeydown="if(event.key==='Enter')ocSaveSec(${sec.id})">
+      <span class="oc-sec-time" id="oct-${sec.id}">${esc(sec.time||'')}</span>
+      <input class="oc-sec-time-in" id="octe-${sec.id}" value="${esc(sec.time||'')}" onkeydown="if(event.key==='Enter')ocSaveSec(${sec.id})">
+      <button class="oc-sec-save" id="ocsv-${sec.id}" onclick="ocSaveSec(${sec.id})">Save</button>
+      <button title="Edit section" style="background:none;border:none;cursor:pointer;color:var(--text4);font-size:13px;padding:2px 4px;border-radius:3px;transition:color .12s" onclick="ocEditSec(${sec.id})" onmouseover="this.style.color='var(--text2)'" onmouseout="this.style.color='var(--text4)'">✏</button>
+      <button class="oc-sec-del" title="Delete section" onclick="ocDelSec(${sec.id})">×</button>`;
+    sdiv.appendChild(hdr);
+
+    // Steps
+    const stepsDiv=document.createElement('div');stepsDiv.className='oc-steps';stepsDiv.id='oc-steps-'+sec.id;
+    sec.steps.forEach((step,sti)=>{
+      stepsDiv.appendChild(buildOCStep(sec.id,step,sti));
+    });
+    sdiv.appendChild(stepsDiv);
+
+    // Add step row
+    const addRow=document.createElement('div');addRow.className='oc-add-row';
+    const inp=document.createElement('input');inp.className='oc-add-in';inp.placeholder='Add new step...';inp.id='oc-add-in-'+sec.id;
+    inp.onkeydown=(e)=>{if(e.key==='Enter')ocAddStep(sec.id);};
+    const btn=document.createElement('button');btn.className='oc-add-btn';btn.textContent='+ Add step';btn.onclick=()=>ocAddStep(sec.id);
+    addRow.appendChild(inp);addRow.appendChild(btn);
+    sdiv.appendChild(addRow);
+
+    el.appendChild(sdiv);
+  });
+}
+
+function buildOCStep(secId,step,sti){
+  const div=document.createElement('div');div.className='oc-step';div.id='oc-step-'+step.id;
+  const cb=document.createElement('input');cb.type='checkbox';cb.className='oc-step-cb';cb.checked=!!step.done;
+  cb.onchange=()=>{step.done=cb.checked;ta.classList.toggle('done-txt',step.done);saveOC();};
+  const ta=document.createElement('textarea');ta.className='oc-step-text'+(step.done?' done-txt':'');ta.value=step.text;ta.rows=1;
+  // Auto-resize
+  ta.style.height='auto';
+  ta.oninput=()=>{step.text=ta.value;saveOC();ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';};
+  ta.onfocus=()=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';};
+  setTimeout(()=>{ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';},0);
+  const del=document.createElement('button');del.className='oc-step-del';del.title='Delete step';del.textContent='×';
+  del.onclick=()=>{
+    const sec=ocData.find(s=>s.id===secId);if(!sec)return;
+    sec.steps=sec.steps.filter(x=>x.id!==step.id);
+    saveOC();
+    const el=document.getElementById('oc-step-'+step.id);if(el)el.remove();
+  };
+  div.appendChild(cb);div.appendChild(ta);div.appendChild(del);
+  return div;
+}
+
+function ocAddStep(secId){
+  const inp=document.getElementById('oc-add-in-'+secId);if(!inp)return;
+  const text=inp.value.trim();if(!text){inp.focus();return;}
+  const sec=ocData.find(s=>s.id===secId);if(!sec)return;
+  const step={id:Date.now(),text,done:false};
+  sec.steps.push(step);
+  saveOC();
+  const stepsDiv=document.getElementById('oc-steps-'+secId);
+  if(stepsDiv)stepsDiv.appendChild(buildOCStep(secId,step,sec.steps.length-1));
+  inp.value='';inp.focus();
+}
+
+function ocEditSec(id){
+  document.getElementById('ocn-'+id).style.display='none';
+  document.getElementById('oct-'+id).style.display='none';
+  document.getElementById('ocne-'+id).style.display='block';
+  document.getElementById('octe-'+id).style.display='block';
+  document.getElementById('ocsv-'+id).style.display='inline-block';
+  document.getElementById('ocne-'+id).focus();
+}
+function ocSaveSec(id){
+  const sec=ocData.find(s=>s.id===id);if(!sec)return;
+  sec.name=(document.getElementById('ocne-'+id).value.trim()||sec.name).toUpperCase();
+  sec.time=document.getElementById('octe-'+id).value.trim();
+  saveOC();
+  document.getElementById('ocn-'+id).textContent=sec.name;document.getElementById('ocn-'+id).style.display='';
+  document.getElementById('oct-'+id).textContent=sec.time;document.getElementById('oct-'+id).style.display='';
+  document.getElementById('ocne-'+id).style.display='none';
+  document.getElementById('octe-'+id).style.display='none';
+  document.getElementById('ocsv-'+id).style.display='none';
+}
+function ocDelSec(id){
+  if(!confirm('Delete this section and all its steps?'))return;
+  ocData=ocData.filter(s=>s.id!==id);saveOC();
+  const el=document.getElementById('oc-sec-'+id);if(el)el.remove();
+}
+function ocAddSection(){
+  const inp=document.getElementById('oc-new-sec');if(!inp)return;
+  const name=inp.value.trim();if(!name){inp.focus();return;}
+  const sec={id:Date.now(),name:name.toUpperCase(),time:'',steps:[]};
+  ocData.push(sec);saveOC();inp.value='';
+  const el=document.getElementById('oc-sections');
+  // Re-render just the new section
+  const tmp=document.createElement('div');
+  ocData=[...ocData];// trigger re-render
+  renderOutsource();
+}
+
 // Gate: only call init() once Firebase has loaded (or immediately if Firebase not configured)
 (function(){
   // If Firebase config not yet filled in, just run normally
