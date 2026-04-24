@@ -726,7 +726,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
     window._fbSaveTimer = setTimeout(async () => {
       try {
         const payload = {};
-        const keys = ['mbs_ws_v4','mbs_q_v4','mbs_rem_v1','mbs_tl_v1','mbs_cal_v1','mbs_hist_v1','mbs_eodlinks_v1','mbs_wkp_v1','mbs_goals_v1','mbs_et_v1'];
+        const keys = ['mbs_ws_v4','mbs_q_v4','mbs_rem_v1','mbs_tl_v1','mbs_cal_v1','mbs_hist_v1','mbs_eodlinks_v1','mbs_wkp_v1','mbs_goals_v1','mbs_et_v1','mbs_rules_v1','mbs_oc_v1'];
         keys.forEach(k => {
           const v = localStorage.getItem(k);
           if (v) payload[k] = v;
@@ -768,7 +768,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
       const snap = await getDoc(window._fbDoc());
       if (snap.exists()) {
         const data = snap.data();
-        const keys = ['mbs_ws_v4','mbs_q_v4','mbs_rem_v1','mbs_tl_v1','mbs_cal_v1','mbs_hist_v1','mbs_eodlinks_v1','mbs_wkp_v1','mbs_goals_v1','mbs_et_v1'];
+        const keys = ['mbs_ws_v4','mbs_q_v4','mbs_rem_v1','mbs_tl_v1','mbs_cal_v1','mbs_hist_v1','mbs_eodlinks_v1','mbs_wkp_v1','mbs_goals_v1','mbs_et_v1','mbs_rules_v1','mbs_oc_v1'];
         keys.forEach(k => {
           if (data[k]) {
             localStorage.setItem(k, data[k]);
@@ -1318,7 +1318,7 @@ function copyShareLink(mode){
 function exportBackup(silent=false){
   try{
     const data={_version:2,_exported:new Date().toISOString()};
-    [SK,QK,RK,TLK,CALK,HK,EODLK,'mbs_wkp_v1','mbs_goals_v1','mbs_et_v1'].forEach(k=>{const v=fsGet(k);if(v)data[k]=v;});
+    [SK,QK,RK,TLK,CALK,HK,EODLK,'mbs_wkp_v1','mbs_goals_v1','mbs_et_v1','mbs_rules_v1','mbs_oc_v1'].forEach(k=>{const v=fsGet(k);if(v)data[k]=v;});
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
