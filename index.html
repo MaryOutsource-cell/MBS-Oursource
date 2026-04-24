@@ -505,6 +505,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .sop-check-text.done-txt{text-decoration:line-through;color:var(--text3)}
 .sop-check-del{background:none;border:none;cursor:pointer;color:var(--text4);font-size:14px;padding:0 3px;border-radius:3px;transition:color .12s;flex-shrink:0}
 .sop-check-del:hover{color:var(--red)}
+/* Per-step photo */
+.sop-check-item{flex-direction:column;align-items:stretch;gap:0;padding:0}
+.sop-check-row{display:flex;align-items:center;gap:8px;padding:7px 10px}
+.sop-step-photo-btn{background:none;border:1px solid var(--border-md);border-radius:5px;color:var(--text4);font-size:12px;padding:2px 6px;cursor:pointer;flex-shrink:0;transition:all .12s;line-height:1}
+.sop-step-photo-btn:hover{border-color:var(--green);color:var(--green);background:var(--green-lt)}
+.sop-step-photo-btn.has-photo{border-color:#93C5FD;color:#1A4E9B;background:#DBEAFE}
+.sop-step-img-wrap{position:relative;width:100%;border-top:1px solid var(--border)}
+.sop-step-img-wrap img{width:100%;display:block;border-radius:0 0 calc(var(--r) - 1px) calc(var(--r) - 1px);max-height:340px;object-fit:contain;background:var(--surface3)}
+.sop-step-img-del{position:absolute;top:6px;right:8px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.sop-step-img-del:hover{background:var(--red)}
 .sop-add-step-row{display:flex;gap:6px;margin-top:4px}
 .sop-step-in{flex:1;padding:7px 10px;border-radius:var(--r);border:1px solid var(--border-md);background:var(--surface2);font-family:var(--sans);font-size:13px;color:var(--text)}
 .sop-step-in:focus{outline:none;border-color:var(--green)}
@@ -886,6 +896,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
           <input class="sop-step-in" id="sop-step-in" placeholder="Add a step..." onkeydown="if(event.key==='Enter')sopAddStep()">
           <button class="sop-add-step-btn" onclick="sopAddStep()">+ Add Step</button>
         </div>
+        <input type="file" id="sop-step-photo-in" accept="image/*" style="display:none" onchange="sopAttachStepPhoto(this)">
       </div>
       <div>
         <div class="sop-section-label">🖼 Reference Photos</div>
@@ -2524,7 +2535,7 @@ function saveSOP(){
 }
 function sopAddStep(){
   const inp=document.getElementById('sop-step-in');const text=inp.value.trim();if(!text){inp.focus();return;}
-  _sopData.steps.push({id:Date.now(),text,done:false});inp.value='';
+  _sopData.steps.push({id:Date.now(),text,done:false,photo:null});inp.value='';
   renderSOPChecklist();
 }
 function sopTogStep(id){
@@ -2535,18 +2546,52 @@ function sopDelStep(id){
   _sopData.steps=_sopData.steps.filter(x=>x.id!==id);
   renderSOPChecklist();
 }
+let _sopStepPhotoTarget=null;
 function renderSOPChecklist(){
   const el=document.getElementById('sop-checklist');el.innerHTML='';
   if(!_sopData.steps.length){el.innerHTML='<div style="font-size:12px;color:var(--text4);text-align:center;padding:10px 0">No steps yet. Add your first step below.</div>';return;}
   _sopData.steps.forEach((s,i)=>{
     const div=document.createElement('div');
     div.className='sop-check-item'+(s.done?' done-step':'');
-    div.innerHTML=`
+    // Main row
+    const row=document.createElement('div');
+    row.className='sop-check-row';
+    row.innerHTML=`
       <input type="checkbox" class="sop-check-cb" ${s.done?'checked':''} onchange="sopTogStep(${s.id})">
       <input class="sop-check-text${s.done?' done-txt':''}" value="${esc(s.text)}" oninput="_sopData.steps[${i}].text=this.value" style="text-decoration:${s.done?'line-through':'none'}">
+      <button class="sop-step-photo-btn${s.photo?' has-photo':''}" title="${s.photo?'Change photo':'Attach photo'}" onclick="sopTriggerStepPhoto(${s.id})">📷</button>
       <button class="sop-check-del" onclick="sopDelStep(${s.id})">×</button>`;
+    div.appendChild(row);
+    // Photo strip (if attached)
+    if(s.photo){
+      const wrap=document.createElement('div');
+      wrap.className='sop-step-img-wrap';
+      wrap.innerHTML=`<img src="${s.photo.data}" alt="${esc(s.photo.name||'')}"><button class="sop-step-img-del" title="Remove photo" onclick="sopDelStepPhoto(${s.id})">×</button>`;
+      div.appendChild(wrap);
+    }
     el.appendChild(div);
   });
+}
+function sopTriggerStepPhoto(stepId){
+  _sopStepPhotoTarget=stepId;
+  const inp=document.getElementById('sop-step-photo-in');
+  inp.value='';inp.click();
+}
+function sopAttachStepPhoto(inp){
+  const file=inp.files[0];if(!file||_sopStepPhotoTarget===null)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const s=_sopData.steps.find(x=>x.id===_sopStepPhotoTarget);
+    if(s){s.photo={data:e.target.result,name:file.name};}
+    _sopStepPhotoTarget=null;
+    renderSOPChecklist();
+  };
+  reader.readAsDataURL(file);
+}
+function sopDelStepPhoto(stepId){
+  const s=_sopData.steps.find(x=>x.id===stepId);
+  if(s)s.photo=null;
+  renderSOPChecklist();
 }
 function sopAddPhotos(inp){
   const files=Array.from(inp.files);
