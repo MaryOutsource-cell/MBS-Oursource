@@ -997,6 +997,30 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
       </div>
       <input type="hidden" id="wk-total-sec-hidden" value="0">
     </div>
+    <!-- END OF WEEK REPORT EMAIL BLOCK -->
+    <div class="card" style="margin-bottom:1.25rem">
+      <div class="card-head">
+        <span class="cht">📬 End of Week Report</span>
+        <button class="wk-export-btn" id="eow-copy-btn" onclick="copyEOWOutlook(this)" title="Copy email body for Outlook">📧 Copy for Outlook</button>
+      </div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+        <!-- Subject -->
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);white-space:nowrap;min-width:58px">Subject</span>
+          <div id="eow-subject" style="flex:1;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 12px">End of Week Report — <span id="eow-daterange">—</span></div>
+        </div>
+        <!-- Body -->
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);white-space:nowrap;min-width:58px;padding-top:7px">Body</span>
+          <div id="eow-body" style="flex:1;font-family:var(--sans);font-size:13px;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;line-height:1.8;white-space:pre-wrap">Hi Debbi and Mike,
+
+Please see my end of week report below.
+
+</div>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-head">
         <span class="cht">This Week — Breakdown</span>
@@ -2083,6 +2107,10 @@ function renderWeekly(){
   document.getElementById('wt-done').textContent=totDone;
   const m0=dateForIdx(0),m4=dateForIdx(4);
   document.getElementById('wt-weekof').textContent=MONS_S[m0.getMonth()]+' '+m0.getDate()+'–'+m4.getDate();
+  // End of week report date range
+  const eowRange=MONS[m0.getMonth()]+' '+m0.getDate()+' – '+MONS[m4.getMonth()]+' '+m4.getDate()+', '+m4.getFullYear();
+  const eowEl=document.getElementById('eow-daterange');
+  if(eowEl)eowEl.textContent=eowRange;
   // Re-run calculator in case rate already entered
   const rateIn=document.getElementById('wk-rate-in');
   if(rateIn&&rateIn.value)calcWeekEarnings(rateIn.value);
@@ -3514,6 +3542,36 @@ function ocAddSection(){
 //  WEEKLY BREAKDOWN EXPORTS
 // ═══════════════════════════════════════════
 
+// ── Copy End of Week email for Outlook ──
+function copyEOWOutlook(btn){
+  const m0=dateForIdx(0),m4=dateForIdx(4);
+  const dateRange=MONS[m0.getMonth()]+' '+m0.getDate()+' – '+MONS[m4.getMonth()]+' '+m4.getDate()+', '+m4.getFullYear();
+  const subject='End of Week Report — '+dateRange;
+  const bodyText='Hi Debbi and Mike,\n\nPlease see my end of week report below.\n';
+  const tableHTML=`<div style="font-family:Calibri,Arial,sans-serif;max-width:720px">
+  <p style="font-size:13px;color:#1A1510;margin:0 0 16px 0">Hi Debbi and Mike,<br><br>Please see my end of week report below.</p>
+  </div>`;
+  try{
+    const blob=new Blob([tableHTML],{type:'text/html'});
+    const plain=new Blob([bodyText],{type:'text/plain'});
+    const item=new ClipboardItem({'text/html':blob,'text/plain':plain});
+    navigator.clipboard.write([item]).then(()=>{
+      const orig=btn.textContent;btn.textContent='✓ Copied!';btn.style.background='var(--green-bg)';btn.style.color='var(--green)';
+      setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';},2400);
+      // Also copy subject to clipboard notification
+      showToast('✓ Email body copied! Subject: '+subject);
+    }).catch(()=>{
+      navigator.clipboard.writeText(bodyText).then(()=>{
+        showToast('✓ Copied! Subject: '+subject);
+        const orig=btn.textContent;btn.textContent='✓ Copied!';btn.style.background='var(--green-bg)';btn.style.color='var(--green)';
+        setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';},2400);
+      });
+    });
+  }catch(e){
+    navigator.clipboard.writeText(bodyText).then(()=>showToast('✓ Copied! Subject: '+subject));
+  }
+}
+
 // ── Collect current breakdown data ──
 function getBreakdownData(){
   const rows=[];
@@ -3730,20 +3788,12 @@ function renderQPending(){
     tbody.innerHTML=`<tr><td colspan="4" style="padding:2rem;text-align:center;color:var(--text4);font-size:13px">🎉 No pending tasks in the Queue.</td></tr>`;
     return;
   }
-  const urgLabel=u=>u==='red'?'🔴 Urgent':u==='amber'?'🟡 Asked':'⚫ Planned';
-  const urgColor=u=>u==='red'?'#B91C1C':u==='amber'?'#92400E':'#4B5563';
-  const urgBg=u=>u==='red'?'#FEE2E2':u==='amber'?'#FEF3C7':'#F3F4F6';
   pending.forEach((q,i)=>{
     const tr=document.createElement('tr');
     const actionOpts=ACTIONS.map(a=>`<option value="${a}"${q.action===a?' selected':''}>${a}</option>`).join('');
     tr.innerHTML=`
       <td style="font-family:var(--mono);font-size:10px;color:var(--text4);text-align:center;width:34px">${i+1}</td>
-      <td>
-        <div style="display:flex;align-items:center;gap:7px">
-          <span style="background:${urgBg(q.urg)};color:${urgColor(q.urg)};padding:1px 7px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;white-space:nowrap">${urgLabel(q.urg)}</span>
-          <span style="font-size:13px;color:var(--text)">${esc(q.name||'Unnamed')}</span>
-        </div>
-      </td>
+      <td style="font-size:13px;color:var(--text)">${esc(q.name||'Unnamed')}</td>
       <td>
         <select class="qp-status-sel" onchange="updQPAction(${q.id},this.value)">${actionOpts}</select>
       </td>
