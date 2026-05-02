@@ -587,6 +587,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .et-empty{padding:3rem;text-align:center;color:var(--text4);font-size:13px}
 
 .sdiv{border:none;border-top:1px solid var(--border);margin:1.25rem 0}
+
+/* ── WEEKLY BREAKDOWN EXPORT BUTTONS ── */
+.wk-export-btn{font-family:var(--sans);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid var(--border-md);background:var(--surface);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .14s;line-height:1}
+.wk-export-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--green)}
+.wk-export-pdf{background:var(--green-lt);color:var(--green);border-color:var(--green)}
+.wk-export-pdf:hover{background:var(--green-bg);color:var(--green)}
 /* ── RULES & ESCALATION ── */
 .rul-add-card{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--rlg);padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
 .rul-add-row1{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -980,7 +986,14 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
       <input type="hidden" id="wk-total-sec-hidden" value="0">
     </div>
     <div class="card">
-      <div class="card-head"><span class="cht">This Week — Breakdown</span></div>
+      <div class="card-head">
+        <span class="cht">This Week — Breakdown</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="wk-export-btn" onclick="copyBreakdownOutlook(this)" title="Copy formatted table for Outlook email">📧 Copy for Outlook</button>
+          <button class="wk-export-btn" onclick="exportBreakdownCSV()" title="Download as CSV">⬇ CSV</button>
+          <button class="wk-export-btn wk-export-pdf" onclick="exportBreakdownPDF()" title="Download as PDF">🖨 PDF</button>
+        </div>
+      </div>
       <div id="wk-breakdown"></div>
     </div>
     <div id="wk-history"></div>
@@ -3457,6 +3470,213 @@ function ocAddSection(){
   // Otherwise Firebase module will call init() after loading cloud data
   // (handled in the firebase module's onAuthStateChanged)
 })();
+
+// ═══════════════════════════════════════════
+//  WEEKLY BREAKDOWN EXPORTS
+// ═══════════════════════════════════════════
+
+// ── Collect current breakdown data ──
+function getBreakdownData(){
+  const rows=[];
+  state.days.forEach((day,di)=>{
+    const tasks=day.tasks.filter(t=>t.name.trim()||liveEl(t)>0);
+    if(!tasks.length)return;
+    const d=dateForIdx(di);
+    tasks.forEach(t=>{
+      rows.push({
+        day:DNAMES[di],
+        date:fmtD(d)+', '+d.getFullYear(),
+        task:t.name||'Unnamed',
+        time:fmtHMS(liveEl(t)),
+        status:t.status,
+        action:t.action||'Not started',
+        notes:t.notes||''
+      });
+    });
+  });
+  return rows;
+}
+
+// ── Export as CSV ──
+function exportBreakdownCSV(){
+  const rows=getBreakdownData();
+  if(!rows.length){showToast('No tasks to export.');return;}
+  const header=['Day','Date','Task','Time','Status','Action','Notes'];
+  const csvRows=[header.map(h=>`"${h}"`).join(',')];
+  rows.forEach(r=>{
+    csvRows.push([r.day,r.date,r.task,r.time,r.status,r.action,r.notes].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','));
+  });
+  // Add totals row
+  const m0=dateForIdx(0),m4=dateForIdx(4);
+  const weekLabel=MONS_S[m0.getMonth()]+' '+m0.getDate()+'–'+m4.getDate();
+  const totSec=state.days.reduce((s,d)=>s+d.tasks.reduce((a,t)=>a+liveEl(t),0),0);
+  csvRows.push(['','','TOTAL HOURS',fmtHMS(totSec),'','',''].map(v=>`"${v}"`).join(','));
+  const blob=new Blob([csvRows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`MBS_Weekly_Breakdown_${weekLabel.replace(/[^a-zA-Z0-9]/g,'_')}.csv`;
+  a.click();URL.revokeObjectURL(a.href);
+  showToast('✓ CSV downloaded');
+}
+
+// ── Export as PDF (print dialog, formatted) ──
+function exportBreakdownPDF(){
+  const rows=getBreakdownData();
+  if(!rows.length){showToast('No tasks to export.');return;}
+  const m0=dateForIdx(0),m4=dateForIdx(4);
+  const weekLabel=MONS_S[m0.getMonth()]+' '+m0.getDate()+'–'+m4.getDate()+', '+m4.getFullYear();
+  const totSec=state.days.reduce((s,d)=>s+d.tasks.reduce((a,t)=>a+liveEl(t),0),0);
+  const totDone=state.days.reduce((s,d)=>s+d.tasks.filter(t=>t.status==='done').length,0);
+
+  // Group rows by day
+  const byDay={};
+  rows.forEach(r=>{
+    if(!byDay[r.day])byDay[r.day]={date:r.date,tasks:[]};
+    byDay[r.day].tasks.push(r);
+  });
+
+  let tableRows='';
+  Object.entries(byDay).forEach(([day,{date,tasks}])=>{
+    tableRows+=`<tr class="day-header-row"><td colspan="5"><strong>${day}</strong> <span style="font-weight:400;color:#666;font-size:11px">${date}</span></td></tr>`;
+    tasks.forEach((t,i)=>{
+      const statusColor=t.status==='done'?'#166534':t.status==='running'?'#15803D':t.status==='paused'?'#92400E':'#4B5563';
+      const statusBg=t.status==='done'?'#D1FAE5':t.status==='running'?'#D4F0E2':t.status==='paused'?'#FEF3C7':'#F3F4F6';
+      tableRows+=`<tr>
+        <td style="padding-left:16px">${t.task}</td>
+        <td style="font-family:monospace;font-size:11px;color:#15803D;font-weight:600">${t.time}</td>
+        <td><span style="background:${statusBg};color:${statusColor};padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em">${t.status}</span></td>
+        <td style="font-size:11px;color:#4B5563">${t.action}</td>
+        <td style="font-size:11px;color:#374151;font-style:italic">${t.notes||'—'}</td>
+      </tr>`;
+    });
+    // Day subtotal
+    const daySec=tasks.reduce((s,t)=>{
+      const parts=t.time.split(':').map(Number);
+      return s+(parts[0]||0)*3600+(parts[1]||0)*60+(parts[2]||0);
+    },0);
+    tableRows+=`<tr class="subtotal-row"><td style="padding-left:16px;color:#6B7280;font-size:11px" colspan="1">Subtotal</td><td style="font-family:monospace;font-size:11px;font-weight:700;color:#15803D">${fmtHMS(daySec)}</td><td colspan="3"></td></tr>`;
+  });
+
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <title>MBS Weekly Breakdown — ${weekLabel}</title>
+  <style>
+    @page{size:A4 landscape;margin:18mm 15mm}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',Arial,sans-serif;font-size:12px;color:#111;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .report-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid #1A6B42;padding-bottom:10px;margin-bottom:16px}
+    .report-title{font-size:20px;font-weight:700;color:#1A1510;letter-spacing:-.02em}
+    .report-title span{display:block;font-size:11px;font-weight:400;color:#6B7280;letter-spacing:.05em;text-transform:uppercase;margin-top:2px}
+    .report-meta{text-align:right;font-size:11px;color:#6B7280}
+    .stat-bar{display:flex;gap:20px;background:#F6F3EE;border-radius:8px;padding:10px 16px;margin-bottom:16px}
+    .stat{text-align:center}.stat-val{font-size:16px;font-weight:700;font-family:monospace;color:#1A6B42}
+    .stat-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#9C8E7A;margin-top:1px}
+    table{width:100%;border-collapse:collapse}
+    thead th{background:#1A1510;color:#fff;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;text-align:left}
+    tbody tr{border-bottom:1px solid #E8E3DA}
+    tbody tr:hover{background:#FAFAF6}
+    tbody td{padding:7px 10px;vertical-align:middle}
+    .day-header-row td{background:#F0EDE6;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#5C5040;padding:6px 10px;border-top:2px solid #E8E3DA}
+    .subtotal-row td{background:#EEF9F3;border-top:1px solid #D4F0E2}
+    .footer{margin-top:16px;font-size:10px;color:#9C8E7A;text-align:center;border-top:1px solid #E8E3DA;padding-top:8px}
+    @media print{body{font-size:11px}}
+  </style></head><body>
+  <div class="report-header">
+    <div class="report-title">My Backyard Sports <span>Weekly Breakdown Report</span></div>
+    <div class="report-meta">Week of ${weekLabel}<br>Generated: ${new Date().toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'})}</div>
+  </div>
+  <div class="stat-bar">
+    <div class="stat"><div class="stat-val">${fmtHMS(totSec)}</div><div class="stat-lbl">Total Hours</div></div>
+    <div class="stat"><div class="stat-val">${totDone}</div><div class="stat-lbl">Tasks Done</div></div>
+    <div class="stat"><div class="stat-val">${rows.length}</div><div class="stat-lbl">Total Tasks</div></div>
+  </div>
+  <table>
+    <thead><tr><th style="width:30%">Task</th><th style="width:10%">Time</th><th style="width:10%">Status</th><th style="width:20%">Action</th><th>Notes</th></tr></thead>
+    <tbody>${tableRows}</tbody>
+    <tfoot><tr style="background:#1A1510"><td colspan="1" style="padding:8px 10px;color:#fff;font-size:11px;font-weight:700">WEEK TOTAL</td><td style="padding:8px 10px;font-family:monospace;font-size:13px;font-weight:700;color:#86EFAC">${fmtHMS(totSec)}</td><td colspan="3" style="padding:8px 10px;color:#9C8E7A;font-size:10px">${totDone} tasks completed</td></tr></tfoot>
+  </table>
+  <div class="footer">MBS Workspace — My Backyard Sports &nbsp;·&nbsp; ${weekLabel} &nbsp;·&nbsp; Confidential</div>
+  <script>window.onload=()=>{window.print();}<\/script>
+  </body></html>`;
+
+  const w=window.open('','_blank','width=1050,height=700');
+  if(!w){showToast('⚠ Allow pop-ups to export PDF.');return;}
+  w.document.write(html);w.document.close();
+}
+
+// ── Copy formatted table for Outlook ──
+function copyBreakdownOutlook(btn){
+  const rows=getBreakdownData();
+  if(!rows.length){showToast('No tasks to copy.');return;}
+  const m0=dateForIdx(0),m4=dateForIdx(4);
+  const weekLabel=MONS_S[m0.getMonth()]+' '+m0.getDate()+'–'+m4.getDate()+', '+m4.getFullYear();
+  const totSec=state.days.reduce((s,d)=>s+d.tasks.reduce((a,t)=>a+liveEl(t),0),0);
+
+  // Group by day
+  const byDay={};
+  rows.forEach(r=>{
+    if(!byDay[r.day])byDay[r.day]={date:r.date,tasks:[]};
+    byDay[r.day].tasks.push(r);
+  });
+
+  let tableBodyHTML='';
+  Object.entries(byDay).forEach(([day,{date,tasks}])=>{
+    tableBodyHTML+=`<tr><td colspan="5" style="background:#F0EDE6;padding:7px 12px;font-family:Calibri,Arial,sans-serif;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#5C5040;border-top:2px solid #E8E3DA">${day} &mdash; ${date}</td></tr>`;
+    tasks.forEach(t=>{
+      const statusColor=t.status==='done'?'#166534':t.status==='running'?'#15803D':t.status==='paused'?'#92400E':'#4B5563';
+      const statusBg=t.status==='done'?'#D1FAE5':t.status==='running'?'#D4F0E2':t.status==='paused'?'#FEF3C7':'#F3F4F6';
+      tableBodyHTML+=`<tr>
+        <td style="padding:7px 12px;font-family:Calibri,Arial,sans-serif;font-size:12px;color:#1A1510;border-bottom:1px solid #E8E3DA">${t.task}</td>
+        <td style="padding:7px 12px;font-family:'Courier New',monospace;font-size:11px;font-weight:bold;color:#15803D;border-bottom:1px solid #E8E3DA;white-space:nowrap">${t.time}</td>
+        <td style="padding:7px 12px;border-bottom:1px solid #E8E3DA"><span style="background:${statusBg};color:${statusColor};padding:2px 8px;border-radius:12px;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;text-transform:uppercase">${t.status}</span></td>
+        <td style="padding:7px 12px;font-family:Calibri,Arial,sans-serif;font-size:11px;color:#4B5563;border-bottom:1px solid #E8E3DA">${t.action}</td>
+        <td style="padding:7px 12px;font-family:Calibri,Arial,sans-serif;font-size:11px;color:#374151;font-style:italic;border-bottom:1px solid #E8E3DA">${t.notes||'&mdash;'}</td>
+      </tr>`;
+    });
+  });
+
+  const tableHTML=`<div style="font-family:Calibri,Arial,sans-serif;max-width:800px">
+  <p style="font-size:14px;font-weight:bold;color:#1A1510;margin:0 0 4px 0">My Backyard Sports — Weekly Breakdown</p>
+  <p style="font-size:11px;color:#6B7280;margin:0 0 14px 0">Week of ${weekLabel} &nbsp;·&nbsp; Total: ${fmtHMS(totSec)}</p>
+  <table style="border-collapse:collapse;width:100%;border:1px solid #E8E3DA" cellspacing="0" cellpadding="0">
+    <thead><tr style="background:#1A1510">
+      <th style="padding:8px 12px;text-align:left;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff">Task</th>
+      <th style="padding:8px 12px;text-align:left;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff">Time</th>
+      <th style="padding:8px 12px;text-align:left;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff">Status</th>
+      <th style="padding:8px 12px;text-align:left;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff">Action</th>
+      <th style="padding:8px 12px;text-align:left;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff">Notes</th>
+    </tr></thead>
+    <tbody>${tableBodyHTML}</tbody>
+    <tfoot><tr style="background:#1A6B42">
+      <td style="padding:8px 12px;font-family:Calibri,Arial,sans-serif;font-size:11px;font-weight:bold;color:#fff">Week Total</td>
+      <td style="padding:8px 12px;font-family:'Courier New',monospace;font-size:13px;font-weight:bold;color:#D4F0E2">${fmtHMS(totSec)}</td>
+      <td colspan="3" style="padding:8px 12px;font-family:Calibri,Arial,sans-serif;font-size:10px;color:rgba(255,255,255,.7)">Generated ${new Date().toLocaleDateString('en-PH',{dateStyle:'medium'})}</td>
+    </tfoot>
+  </table>
+  </div>`;
+
+  // Copy rich HTML to clipboard (works in Outlook)
+  try{
+    const blob=new Blob([tableHTML],{type:'text/html'});
+    const item=new ClipboardItem({'text/html':blob,'text/plain':new Blob([rows.map(r=>`${r.day}\t${r.task}\t${r.time}\t${r.status}\t${r.action}\t${r.notes}`).join('\n')],{type:'text/plain'})});
+    navigator.clipboard.write([item]).then(()=>{
+      const orig=btn.textContent;btn.textContent='✓ Copied!';btn.style.background='var(--green-bg)';btn.style.color='var(--green)';
+      setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';},2400);
+    }).catch(()=>fallbackCopyOutlook(tableHTML,btn));
+  }catch(e){fallbackCopyOutlook(tableHTML,btn);}
+}
+
+function fallbackCopyOutlook(html,btn){
+  // Fallback: open in new window so user can manually copy
+  const w=window.open('','_blank','width=860,height=540');
+  if(!w){showToast('Allow pop-ups to use Outlook copy.');return;}
+  w.document.write(`<!DOCTYPE html><html><head><title>Copy for Outlook</title><style>body{font-family:Calibri,Arial,sans-serif;padding:24px;background:#fafafa}
+  .notice{background:#FEF3C7;border:1px solid #F59E0B;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:#92400E}
+  </style></head><body>
+  <div class="notice">⌨ Press <strong>Ctrl+A</strong> then <strong>Ctrl+C</strong> to copy the table, then paste into Outlook.</div>
+  ${html}
+  </body></html>`);
+  w.document.close();
+  showToast('Pop-up opened — select all & copy');
+}
 </script>
 </body>
 </html>
