@@ -593,6 +593,18 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .wk-export-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--green)}
 .wk-export-pdf{background:var(--green-lt);color:var(--green);border-color:var(--green)}
 .wk-export-pdf:hover{background:var(--green-bg);color:var(--green)}
+
+/* ── QUEUE PENDING TABLE (weekly tab) ── */
+.qp-tbl{width:100%;border-collapse:collapse;min-width:500px}
+.qp-tbl th{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text4);padding:6px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface2)}
+.qp-tbl td{padding:7px 12px;vertical-align:middle;border-bottom:1px solid var(--border);font-size:13px}
+.qp-tbl tr:last-child td{border-bottom:none}
+.qp-tbl tr:hover td{background:#FAFAF6}
+.qp-notes-in{width:100%;border:none;background:transparent;font-family:var(--sans);font-size:12px;color:var(--text2);padding:2px 4px;border-radius:4px;transition:background .12s}
+.qp-notes-in:focus{outline:none;background:var(--surface2)}
+.qp-notes-in::placeholder{color:var(--text4)}
+.qp-status-sel{padding:3px 6px;border-radius:5px;border:1px solid var(--border);background:var(--surface);font-family:var(--sans);font-size:11px;color:var(--text2);width:100%}
+.qp-status-sel:focus{outline:none;border-color:var(--green)}
 /* ── RULES & ESCALATION ── */
 .rul-add-card{background:var(--surface);border:1px solid var(--border-md);border-radius:var(--rlg);padding:16px 18px;margin-bottom:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
 .rul-add-row1{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -996,6 +1008,32 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
       </div>
       <div id="wk-breakdown"></div>
     </div>
+
+    <!-- QUEUE PENDING TASKS -->
+    <div class="card" style="margin-bottom:1.25rem">
+      <div class="card-head">
+        <span class="cht">🗂 Queue — Pending Tasks</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="wk-export-btn" onclick="copyQPendingOutlook(this)" title="Copy for Outlook">📧 Outlook</button>
+          <button class="wk-export-btn" onclick="exportQPendingCSV()" title="Download CSV">⬇ CSV</button>
+          <button class="wk-export-btn wk-export-pdf" onclick="exportQPendingPDF()" title="Export PDF">🖨 PDF</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="qp-tbl" id="qp-tbl">
+          <thead>
+            <tr>
+              <th style="width:34px">#</th>
+              <th>Task Name</th>
+              <th style="width:110px">Status</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="qp-body"></tbody>
+        </table>
+      </div>
+    </div>
+
     <div id="wk-history"></div>
   </div>
 
@@ -2020,6 +2058,7 @@ function renderWkpTable(){
 // ═══════════════════════════════════════════
 function renderWeekly(){
   renderWkpTable();
+  renderQPending();
   const grid=document.getElementById('wk-grid'),breakdown=document.getElementById('wk-breakdown');
   grid.innerHTML='';breakdown.innerHTML='';
   let totSec=0,totDone=0;
@@ -3676,6 +3715,164 @@ function fallbackCopyOutlook(html,btn){
   </body></html>`);
   w.document.close();
   showToast('Pop-up opened — select all & copy');
+}
+
+// ═══════════════════════════════════════════
+//  QUEUE PENDING TABLE — Weekly Tab
+// ═══════════════════════════════════════════
+
+function renderQPending(){
+  const tbody=document.getElementById('qp-body');
+  if(!tbody)return;
+  const pending=qItems.filter(q=>!q.done);
+  tbody.innerHTML='';
+  if(!pending.length){
+    tbody.innerHTML=`<tr><td colspan="4" style="padding:2rem;text-align:center;color:var(--text4);font-size:13px">🎉 No pending tasks in the Queue.</td></tr>`;
+    return;
+  }
+  const urgLabel=u=>u==='red'?'🔴 Urgent':u==='amber'?'🟡 Asked':'⚫ Planned';
+  const urgColor=u=>u==='red'?'#B91C1C':u==='amber'?'#92400E':'#4B5563';
+  const urgBg=u=>u==='red'?'#FEE2E2':u==='amber'?'#FEF3C7':'#F3F4F6';
+  pending.forEach((q,i)=>{
+    const tr=document.createElement('tr');
+    const actionOpts=ACTIONS.map(a=>`<option value="${a}"${q.action===a?' selected':''}>${a}</option>`).join('');
+    tr.innerHTML=`
+      <td style="font-family:var(--mono);font-size:10px;color:var(--text4);text-align:center;width:34px">${i+1}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="background:${urgBg(q.urg)};color:${urgColor(q.urg)};padding:1px 7px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;white-space:nowrap">${urgLabel(q.urg)}</span>
+          <span style="font-size:13px;color:var(--text)">${esc(q.name||'Unnamed')}</span>
+        </div>
+      </td>
+      <td>
+        <select class="qp-status-sel" onchange="updQPAction(${q.id},this.value)">${actionOpts}</select>
+      </td>
+      <td><input class="qp-notes-in" value="${esc(q.notes||q.notes||'')}" placeholder="Add notes…" oninput="updQPNotes(${q.id},this.value)"></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function updQPAction(id,val){
+  const q=qItems.find(x=>x.id===id);
+  if(q){q.action=val;saveQ();}
+}
+function updQPNotes(id,val){
+  const q=qItems.find(x=>x.id===id);
+  if(q){q.notes=val;saveQ();}
+}
+
+// ── shared helper ──
+function getQPendingRows(){
+  return qItems.filter(q=>!q.done).map((q,i)=>({
+    num:i+1,
+    name:q.name||'Unnamed',
+    urg:q.urg==='red'?'Urgent':q.urg==='amber'?'Asked':'Planned',
+    action:q.action||'Not started',
+    notes:q.notes||''
+  }));
+}
+
+// ── CSV ──
+function exportQPendingCSV(){
+  const rows=getQPendingRows();
+  if(!rows.length){showToast('No pending queue tasks.');return;}
+  const header=['"#"','"Task Name"','"Status"','"Notes"'];
+  const lines=[header.join(',')];
+  rows.forEach(r=>lines.push([`"${r.num}"`,`"${String(r.name).replace(/"/g,'""')}"`,`"${r.action}"`,`"${String(r.notes).replace(/"/g,'""')}"`].join(',')));
+  const m0=dateForIdx(0),m4=dateForIdx(4);
+  const wl=MONS_S[m0.getMonth()]+' '+m0.getDate()+'–'+m4.getDate();
+  const blob=new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`MBS_Queue_Pending_${wl.replace(/[^a-zA-Z0-9]/g,'_')}.csv`;
+  a.click();URL.revokeObjectURL(a.href);
+  showToast('✓ CSV downloaded');
+}
+
+// ── PDF ──
+function exportQPendingPDF(){
+  const rows=getQPendingRows();
+  if(!rows.length){showToast('No pending queue tasks.');return;}
+  const m0=dateForIdx(0),m4=dateForIdx(4);
+  const wl=MONS_S[m0.getMonth()]+' '+m0.getDate()+'–'+m4.getDate()+', '+m4.getFullYear();
+  const trs=rows.map((r,i)=>{
+    const bg=i%2===0?'#fff':'#F9F8F6';
+    const uc=r.urg==='Urgent'?'#B91C1C':r.urg==='Asked'?'#92400E':'#4B5563';
+    const ubg=r.urg==='Urgent'?'#FEE2E2':r.urg==='Asked'?'#FEF3C7':'#F3F4F6';
+    return`<tr style="background:${bg};border-bottom:1px solid #E8E3DA">
+      <td style="padding:7px 10px;font-family:monospace;font-size:10px;color:#9C8E7A;text-align:center">${r.num}</td>
+      <td style="padding:7px 12px;font-size:12px;font-weight:500;color:#1A1510">${r.name}</td>
+      <td style="padding:7px 10px"><span style="background:${ubg};color:${uc};padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">${r.urg}</span></td>
+      <td style="padding:7px 12px;font-size:11px;color:#4B5563">${r.action}</td>
+      <td style="padding:7px 12px;font-size:11px;color:#374151;font-style:italic">${r.notes||'—'}</td>
+    </tr>`;
+  }).join('');
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>MBS Queue Pending — ${wl}</title>
+  <style>@page{size:A4 portrait;margin:16mm 14mm}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Arial,sans-serif;font-size:12px;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rh{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid #1A6B42;padding-bottom:10px;margin-bottom:14px}
+  .rt{font-size:19px;font-weight:700;color:#1A1510}.rt span{display:block;font-size:10px;font-weight:400;color:#6B7280;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+  .rm{text-align:right;font-size:11px;color:#6B7280}
+  table{width:100%;border-collapse:collapse;border:1px solid #E8E3DA}
+  thead th{background:#1A1510;color:#fff;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:7px 10px;text-align:left}
+  .footer{margin-top:14px;font-size:10px;color:#9C8E7A;text-align:center;border-top:1px solid #E8E3DA;padding-top:8px}
+  </style></head><body>
+  <div class="rh"><div class="rt">My Backyard Sports <span>Queue — Pending Tasks</span></div>
+  <div class="rm">Week of ${wl}<br>${rows.length} pending &nbsp;·&nbsp; ${new Date().toLocaleDateString('en-PH',{dateStyle:'medium'})}</div></div>
+  <table cellspacing="0" cellpadding="0">
+    <thead><tr><th style="width:34px">#</th><th>Task Name</th><th style="width:80px">Priority</th><th style="width:22%">Status</th><th>Notes</th></tr></thead>
+    <tbody>${trs}</tbody>
+  </table>
+  <div class="footer">MBS Workspace — My Backyard Sports &nbsp;·&nbsp; Queue Pending Tasks &nbsp;·&nbsp; ${wl}</div>
+  <script>window.onload=()=>{window.print();}<\/script>
+  </body></html>`;
+  const w=window.open('','_blank','width=860,height=700');
+  if(!w){showToast('⚠ Allow pop-ups to export PDF.');return;}
+  w.document.write(html);w.document.close();
+}
+
+// ── Copy for Outlook ──
+function copyQPendingOutlook(btn){
+  const rows=getQPendingRows();
+  if(!rows.length){showToast('No pending queue tasks to copy.');return;}
+  const m0=dateForIdx(0),m4=dateForIdx(4);
+  const wl=MONS_S[m0.getMonth()]+' '+m0.getDate()+'–'+m4.getDate()+', '+m4.getFullYear();
+  const trs=rows.map((r,i)=>{
+    const bg=i%2===0?'#ffffff':'#F9F8F6';
+    const uc=r.urg==='Urgent'?'#B91C1C':r.urg==='Asked'?'#92400E':'#4B5563';
+    const ubg=r.urg==='Urgent'?'#FEE2E2':r.urg==='Asked'?'#FEF3C7':'#F3F4F6';
+    return`<tr style="background:${bg}">
+      <td style="padding:7px 12px;font-family:'Courier New',monospace;font-size:10px;color:#9C8E7A;text-align:center;border-bottom:1px solid #E8E3DA">${r.num}</td>
+      <td style="padding:7px 14px;font-family:Calibri,Arial,sans-serif;font-size:12px;font-weight:600;color:#1A1510;border-bottom:1px solid #E8E3DA">${r.name}</td>
+      <td style="padding:7px 12px;border-bottom:1px solid #E8E3DA"><span style="background:${ubg};color:${uc};padding:2px 9px;border-radius:12px;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold">${r.urg}</span></td>
+      <td style="padding:7px 12px;font-family:Calibri,Arial,sans-serif;font-size:11px;color:#4B5563;border-bottom:1px solid #E8E3DA">${r.action}</td>
+      <td style="padding:7px 12px;font-family:Calibri,Arial,sans-serif;font-size:11px;color:#374151;font-style:italic;border-bottom:1px solid #E8E3DA">${r.notes||'&mdash;'}</td>
+    </tr>`;
+  }).join('');
+  const tableHTML=`<div style="font-family:Calibri,Arial,sans-serif;max-width:720px">
+  <p style="font-size:14px;font-weight:bold;color:#1A1510;margin:0 0 3px 0">My Backyard Sports — Queue Pending Tasks</p>
+  <p style="font-size:11px;color:#6B7280;margin:0 0 12px 0">Week of ${wl} &nbsp;&bull;&nbsp; ${rows.length} pending items</p>
+  <table style="border-collapse:collapse;width:100%;border:1px solid #E8E3DA" cellspacing="0" cellpadding="0">
+    <thead><tr style="background:#1A1510">
+      <th style="padding:8px 12px;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff;text-align:left">#</th>
+      <th style="padding:8px 14px;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff;text-align:left">Task Name</th>
+      <th style="padding:8px 12px;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff;text-align:left">Priority</th>
+      <th style="padding:8px 12px;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff;text-align:left">Status</th>
+      <th style="padding:8px 12px;font-family:Calibri,Arial,sans-serif;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff;text-align:left">Notes</th>
+    </tr></thead>
+    <tbody>${trs}</tbody>
+    <tfoot><tr style="background:#1A6B42">
+      <td colspan="2" style="padding:8px 14px;font-family:Calibri,Arial,sans-serif;font-size:11px;font-weight:bold;color:#fff">Total Pending</td>
+      <td colspan="3" style="padding:8px 12px;font-family:'Courier New',monospace;font-size:13px;font-weight:bold;color:#D4F0E2">${rows.length}</td>
+    </tfoot>
+  </table></div>`;
+  try{
+    const blob=new Blob([tableHTML],{type:'text/html'});
+    const plain=new Blob([rows.map(r=>`${r.num}\t${r.name}\t${r.urg}\t${r.action}\t${r.notes}`).join('\n')],{type:'text/plain'});
+    const item=new ClipboardItem({'text/html':blob,'text/plain':plain});
+    navigator.clipboard.write([item]).then(()=>{
+      const orig=btn.textContent;btn.textContent='✓ Copied!';btn.style.background='var(--green-bg)';btn.style.color='var(--green)';
+      setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';},2400);
+    }).catch(()=>fallbackCopyOutlook(tableHTML,btn));
+  }catch(e){fallbackCopyOutlook(tableHTML,btn);}
 }
 </script>
 </body>
